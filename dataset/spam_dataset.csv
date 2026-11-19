@@ -1,0 +1,601 @@
+text,label,category
+Team meeting is moved to 4 PM tomorrow.,ham,legitimate
+Your genuine order from FedEx can be tracked only inside the order page.,ham,legitimate
+Security update: your account is safe. Do not reply or send your OTP.,ham,legitimate
+Please send the project file when you reach office.,ham,legitimate
+Please update the delivery address from the official Paytm order page.,ham,legitimate
+This is an official alert. Do not click unknown links or disclose account data.,ham,legitimate
+Flipkart order 4582 has arrived and is ready for pickup.,ham,legitimate
+Flash sale: buy now and get 90 percent discount at bit.ly/freegift,spam,promotional_spam
+Myntra parcel is on hold. Pay Rs. 40 redelivery fee at secure-update.net,spam,delivery_scam
+Paytm wallet blocked. Enter OTP and password to reactivate,spam,banking_fraud
+"Rohan, are you free for dinner tonight?",ham,legitimate
+Courier cannot deliver. Confirm PIN and card details at kfcashback.xyz,spam,delivery_scam
+Security update: your account is safe. Do not reply or send your OTP.,ham,legitimate
+"Earn Rs. 20,000 weekly from Amazon work. Investment required",spam,fake_job
+"Limited period free recharge. Register now for Rs. 12,499",spam,promotional_spam
+Amazon received your return request. Refund will reach the original account.,ham,legitimate
+"Official bank notice: we will never ask for OTP, but verify now for security",spam,banking_fraud
+FedEx tracking: the courier attempted delivery; please collect from the local office.,ham,legitimate
+Your genuine order from FedEx can be tracked only inside the order page.,ham,legitimate
+Flash sale: buy now and get 90 percent discount at kfcashback.xyz,spam,promotional_spam
+Hiring 100 candidates for online form filling. Send Rs. 500 registration,spam,fake_job
+"Dear customer, never share OTP or UPI PIN. Bank support will not ask for these.",ham,legitimate
+"Official bank notice: we will never ask for OTP, but verify now for security",spam,banking_fraud
+"The company HR asked for the interview details, with no joining fee.",ham,legitimate
+Amazon order address issue. Pay small fee to avoid cancellation,spam,delivery_scam
+The package arrived safely. Thank you for your order.,ham,legitimate
+"Your UPI payment of Rs. 1,250 was successful.",ham,legitimate
+Your UPI payment of Rs. 499 was successful.,ham,legitimate
+KYC documents can be submitted at your branch during working hours.,ham,legitimate
+"Limited period free recharge. Register now for Rs. 25,000",spam,promotional_spam
+FedEx tracking: the courier attempted delivery; please collect from the local office.,ham,legitimate
+"Congratulations Rohan! You won Rs. 12,499. Claim prize now at secure-update.net",spam,lottery_scam
+Immediate job offer: approve offer and deposit refundable amount,spam,fake_job
+Paytm delivery update: package out for delivery today.,ham,legitimate
+"Dear customer, never share OTP or UPI PIN. Bank support will not ask for these.",ham,legitimate
+HDFC customer verification required. Enter card PIN on secure-update.net,spam,phishing
+"Congratulations, this prize is genuine. Processing fee can be paid safely",spam,lottery_scam
+Team meeting is moved to 4 PM tomorrow.,ham,legitimate
+"You received a prize confirmation by email, but no fees are requested.",ham,legitimate
+"The company HR asked for the interview details, with no joining fee.",ham,legitimate
+"Earn Rs. 20,000 weekly from Amazon work. Investment required",spam,fake_job
+Customs charge Rs. 499 for your Flipkart package,spam,delivery_scam
+Please update the delivery address from the official Paytm order page.,ham,legitimate
+OTP expires in 1 minute. Send 6 digit code to confirm Amazon cashback,spam,otp_scam
+Happy birthday! Hope you have a wonderful day.,ham,legitimate
+Security alert: confirm password and Aadhaar at secure-update.net,spam,phishing
+Your SBI account verification is complete after branch KYC.,ham,legitimate
+Courier cannot deliver. Confirm PIN and card details at kfcashback.xyz,spam,delivery_scam
+Paytm account suspended. Login immediately through bit.ly/freegift,spam,phishing
+Immediate job offer: approve offer and deposit refundable amount,spam,fake_job
+Caller asking for OTP: verify it with us immediately,spam,otp_scam
+FedEx tracking: the courier attempted delivery; please collect from the local office.,ham,legitimate
+Get free Myntra voucher by forwarding this message,spam,promotional_spam
+"Congratulations, this prize is genuine. Processing fee can be paid safely",spam,lottery_scam
+"A purchase of Rs. 12,499 needs OTP approval. Do not share it.",ham,legitimate
+"FedEx shipment fee pending. Update address and pay Rs. 1,250",spam,delivery_scam
+Please update the delivery address from the official Paytm order page.,ham,legitimate
+Hiring 100 candidates for online form filling. Send Rs. 500 registration,spam,fake_job
+Security update: your account is safe. Do not reply or send your OTP.,ham,legitimate
+FedEx tracking: the courier attempted delivery; please collect from the local office.,ham,legitimate
+Courier cannot deliver. Confirm PIN and card details at bit.ly/freegift,spam,delivery_scam
+A purchase of Rs. 499 needs OTP approval. Do not share it.,ham,legitimate
+Bank of Baroda verification: enter the UPI PIN shown in your app only.,ham,legitimate
+Hiring 100 candidates for online form filling. Send Rs. 500 registration,spam,fake_job
+Your ICICI debit card was used at a store. Not you? Call the number on the card.,ham,legitimate
+We cancelled the suspicious payment request. Check the official HDFC app.,ham,legitimate
+Update Paytm KYC in 2 hours or account will close: secure-update.net,spam,phishing
+"Earn Rs. 20,000 weekly from Amazon work. Investment required",spam,fake_job
+"Work from home for Infosys. Earn Rs. 2,999 daily. Pay joining fee",spam,fake_job
+Customer safety notice: OTP is private. Send it to verify the refund,spam,otp_scam
+Team meeting is moved to 4 PM tomorrow.,ham,legitimate
+This is an official alert. Do not click unknown links or disclose account data.,ham,legitimate
+ICICI verification: enter the UPI PIN shown in your app only.,ham,legitimate
+Your HDFC account is blocked. Verify KYC immediately at secure-update.net,spam,banking_fraud
+Paytm account suspended. Login immediately through secure-update.net,spam,phishing
+Happy birthday! Hope you have a wonderful day.,ham,legitimate
+FedEx parcel is on hold. Pay Rs. 40 redelivery fee at claim-prize.in,spam,delivery_scam
+"Rs. 2,999 refund pending. Share card details and UPI PIN at claim-prize.in",spam,banking_fraud
+"The FedEx delivery agent called, but no payment link was sent.",ham,legitimate
+Hiring 100 candidates for online form filling. Send Rs. 500 registration,spam,fake_job
+Do not share OTP with anyone. Reply with OTP now for cashback,spam,otp_scam
+Your genuine order from Flipkart can be tracked only inside the order page.,ham,legitimate
+Team meeting is moved to 4 PM tomorrow.,ham,legitimate
+HDFC customer verification required. Enter card PIN on claim-prize.in,spam,phishing
+Your ICICI card is still active. Verify only through the official app.,ham,legitimate
+Paytm delivery update: package out for delivery today.,ham,legitimate
+The package arrived safely. Thank you for your order.,ham,legitimate
+Immediate job offer: approve offer and deposit refundable amount,spam,fake_job
+"Invest Rs. 1,250 today for guaranteed daily returns",spam,promotional_spam
+Flipkart offer details are available inside the official app.,ham,legitimate
+"Invest Rs. 5,000 today for guaranteed daily returns",spam,promotional_spam
+Please send the project file when you reach office.,ham,legitimate
+Customer safety notice: OTP is private. Send it to verify the refund,spam,otp_scam
+FedEx tracking: the courier attempted delivery; please collect from the local office.,ham,legitimate
+"This is a real draw result. No bank PIN needed, but share Aadhaar to claim",spam,lottery_scam
+Lottery winner message: legitimate prize; pay only by UPI to receive cash,spam,lottery_scam
+Security update: your account is safe. Do not reply or send your OTP.,ham,legitimate
+Hiring 100 candidates for online form filling. Send Rs. 500 registration,spam,fake_job
+FedEx tracking: the courier attempted delivery; please collect from the local office.,ham,legitimate
+"A purchase of Rs. 5,000 needs OTP approval. Do not share it.",ham,legitimate
+Bank customer care text: do not share OTP. Send OTP here to unlock,spam,banking_fraud
+"Earn Rs. 20,000 weekly from Amazon work. Investment required",spam,fake_job
+We need the OTP you just received to complete verification. Do not share? Share it now,spam,otp_scam
+Flash sale: buy now and get 90 percent discount at kfcashback.xyz,spam,promotional_spam
+Exclusive loan approved instantly. Apply here and share details,spam,promotional_spam
+"Jio lucky draw: selected winner! Pay registration fee to receive Rs. 12,499",spam,lottery_scam
+Courier cannot deliver. Confirm PIN and card details at claim-prize.in,spam,delivery_scam
+Caller asking for OTP: verify it with us immediately,spam,otp_scam
+"Mom: Kavya, call me after reaching home.",ham,legitimate
+"A purchase of Rs. 25,000 needs OTP approval. Do not share it.",ham,legitimate
+FedEx account locked. Verify credentials at bit.ly/freegift,spam,phishing
+Please send the project file when you reach office.,ham,legitimate
+FedEx order 4582 has arrived and is ready for pickup.,ham,legitimate
+Paytm wallet blocked. Enter OTP and password to reactivate,spam,banking_fraud
+Your genuine order from FedEx can be tracked only inside the order page.,ham,legitimate
+Update Paytm KYC in 2 hours or account will close: kfcashback.xyz,spam,phishing
+The package arrived safely. Thank you for your order.,ham,legitimate
+"Customs charge Rs. 2,999 for your Flipkart package",spam,delivery_scam
+Courier cannot deliver. Confirm PIN and card details at kfcashback.xyz,spam,delivery_scam
+"Work from home for Wipro. Earn Rs. 25,000 daily. Pay joining fee",spam,fake_job
+Paytm wallet blocked. Enter OTP and password to reactivate,spam,banking_fraud
+"Bank alert style message: no need to call, enter password at bit.ly/freegift",spam,phishing
+Your SBI account verification is complete after branch KYC.,ham,legitimate
+"You received a prize confirmation by email, but no fees are requested.",ham,legitimate
+"Invest Rs. 1,250 today for guaranteed daily returns",spam,promotional_spam
+We need the OTP you just received to complete verification. Do not share? Share it now,spam,otp_scam
+The package arrived safely. Thank you for your order.,ham,legitimate
+"Rs. 5,000 refund pending. Share card details and UPI PIN at kfcashback.xyz",spam,banking_fraud
+"Work from home for TCS. Earn Rs. 25,000 daily. Pay joining fee",spam,fake_job
+"You received a prize confirmation by email, but no fees are requested.",ham,legitimate
+"Rs. 2,999 debited from ICICI account ending 1234. Balance is available.",ham,legitimate
+Paytm account suspended. Login immediately through secure-update.net,spam,phishing
+Exclusive loan approved instantly. Apply here and share details,spam,promotional_spam
+KYC documents can be submitted at your branch during working hours.,ham,legitimate
+Bank alert: login failure detected. We have not asked you to send card details.,ham,legitimate
+"Your UPI payment of Rs. 1,250 was successful.",ham,legitimate
+Get free Jio voucher by forwarding this message,spam,promotional_spam
+Hiring 100 candidates for online form filling. Send Rs. 500 registration,spam,fake_job
+Amazon received your return request. Refund will reach the original account.,ham,legitimate
+Get free Paytm voucher by forwarding this message,spam,promotional_spam
+Flipkart order 4582 has arrived and is ready for pickup.,ham,legitimate
+"A prize message arrived by SMS, but we ignored it. No prize fee needed.",ham,legitimate
+Happy birthday! Hope you have a wonderful day.,ham,legitimate
+Your Axis card is still active. Verify only through the official app.,ham,legitimate
+We cancelled the suspicious payment request. Check the official SBI app.,ham,legitimate
+Team meeting is moved to 4 PM tomorrow.,ham,legitimate
+"A prize message arrived by SMS, but we ignored it. No prize fee needed.",ham,legitimate
+Courier cannot deliver. Confirm PIN and card details at kfcashback.xyz,spam,delivery_scam
+"A prize message arrived by SMS, but we ignored it. No prize fee needed.",ham,legitimate
+KYC documents can be submitted at your branch during working hours.,ham,legitimate
+Please update the delivery address from the official Paytm order page.,ham,legitimate
+"A prize message arrived by SMS, but we ignored it. No prize fee needed.",ham,legitimate
+"Rs. 25,000 debited from ICICI account ending 1234. Balance is available.",ham,legitimate
+"Work from home for TCS. Earn Rs. 12,499 daily. Pay joining fee",spam,fake_job
+This is an official alert. Do not click unknown links or disclose account data.,ham,legitimate
+Your ICICI account is blocked. Verify KYC immediately at kfcashback.xyz,spam,banking_fraud
+"FedEx shipment fee pending. Update address and pay Rs. 5,000",spam,delivery_scam
+"The FedEx delivery agent called, but no payment link was sent.",ham,legitimate
+Myntra delivery update: package out for delivery today.,ham,legitimate
+Work from home for Infosys. Earn Rs. 499 daily. Pay joining fee,spam,fake_job
+"You received a prize confirmation by email, but no fees are requested.",ham,legitimate
+Amazon order address issue. Pay small fee to avoid cancellation,spam,delivery_scam
+"A prize message arrived by SMS, but we ignored it. No prize fee needed.",ham,legitimate
+"Congratulations, this prize is genuine. Processing fee can be paid safely",spam,lottery_scam
+Myntra order 4582 has arrived and is ready for pickup.,ham,legitimate
+Amazon received your return request. Refund will reach the original account.,ham,legitimate
+Amazon account locked. Verify credentials at claim-prize.in,spam,phishing
+Your genuine order from FedEx can be tracked only inside the order page.,ham,legitimate
+"Rs. 1,250 debited from HDFC account ending 1234. Balance is available.",ham,legitimate
+Suspicious transaction found. Click kfcashback.xyz to secure your Axis account,spam,banking_fraud
+Security alert: confirm password and Aadhaar at claim-prize.in,spam,phishing
+This is an official alert. Do not click unknown links or disclose account data.,ham,legitimate
+Your genuine order from Myntra can be tracked only inside the order page.,ham,legitimate
+Security alert: confirm password and Aadhaar at claim-prize.in,spam,phishing
+"Forward OTP to receive Rs. 1,250 reward",spam,otp_scam
+"The FedEx delivery agent called, but no payment link was sent.",ham,legitimate
+Your SBI account verification is complete after branch KYC.,ham,legitimate
+"Dear customer, never share OTP or UPI PIN. Bank support will not ask for these.",ham,legitimate
+Update Paytm KYC in 2 hours or account will close: secure-update.net,spam,phishing
+Please update the delivery address from the official Paytm order page.,ham,legitimate
+Please update the delivery address from the official Paytm order page.,ham,legitimate
+"Rs. 5,000 credited to your ICICI account. Reference 985621.",ham,legitimate
+"Dear customer, your account will be frozen. Update account details at bit.ly/freegift",spam,banking_fraud
+Bank alert: login failure detected. We have not asked you to send card details.,ham,legitimate
+"UPI declined: the receiver has not received Rs. 5,000. No OTP was required.",ham,legitimate
+Axis verification: enter the UPI PIN shown in your app only.,ham,legitimate
+Courier cannot deliver. Confirm PIN and card details at claim-prize.in,spam,delivery_scam
+"Forward OTP to receive Rs. 1,250 reward",spam,otp_scam
+"A purchase of Rs. 5,000 needs OTP approval. Do not share it.",ham,legitimate
+Get free Jio voucher by forwarding this message,spam,promotional_spam
+OTP expires in 1 minute. Send 6 digit code to confirm Paytm cashback,spam,otp_scam
+"Prize notification: send bank details to transfer Rs. 12,499",spam,lottery_scam
+A purchase of Rs. 499 needs OTP approval. Do not share it.,ham,legitimate
+"The FedEx delivery agent called, but no payment link was sent.",ham,legitimate
+"Work from home for Reliance. Earn Rs. 2,999 daily. Pay joining fee",spam,fake_job
+"Bank alert style message: no need to call, enter password at claim-prize.in",spam,phishing
+"The FedEx delivery agent called, but no payment link was sent.",ham,legitimate
+Customer safety notice: OTP is private. Send it to verify the refund,spam,otp_scam
+"Congratulations Rohan! You won Rs. 1,250. Claim prize now at kfcashback.xyz",spam,lottery_scam
+"Rs. 1,250 refund pending. Share card details and UPI PIN at claim-prize.in",spam,banking_fraud
+"The company HR asked for the interview details, with no joining fee.",ham,legitimate
+"Earn Rs. 20,000 weekly from Amazon work. Investment required",spam,fake_job
+Happy birthday! Hope you have a wonderful day.,ham,legitimate
+Exclusive loan approved instantly. Apply here and share details,spam,promotional_spam
+"Customs charge Rs. 12,499 for your Flipkart package",spam,delivery_scam
+Your ICICI debit card was used at a store. Not you? Call the number on the card.,ham,legitimate
+Send received OTP and UPI PIN for account refund,spam,otp_scam
+Jio delivery update: package out for delivery today.,ham,legitimate
+Amazon order address issue. Pay small fee to avoid cancellation,spam,delivery_scam
+HDFC customer verification required. Enter card PIN on bit.ly/freegift,spam,phishing
+Happy birthday! Hope you have a wonderful day.,ham,legitimate
+Official security reminder: suspicious link detected. Open bit.ly/freegift to secure account,spam,phishing
+OTP expires in 1 minute. Send 6 digit code to confirm FedEx cashback,spam,otp_scam
+Your SBI account verification is complete after branch KYC.,ham,legitimate
+Send received OTP and UPI PIN for account refund,spam,otp_scam
+Bank of Baroda verification: enter the UPI PIN shown in your app only.,ham,legitimate
+Your Axis debit card was used at a store. Not you? Call the number on the card.,ham,legitimate
+"A purchase of Rs. 25,000 needs OTP approval. Do not share it.",ham,legitimate
+"Customs charge Rs. 2,999 for your Flipkart package",spam,delivery_scam
+We cancelled the suspicious payment request. Check the official HDFC app.,ham,legitimate
+Security update: your account is safe. Do not reply or send your OTP.,ham,legitimate
+"FedEx shipment fee pending. Update address and pay Rs. 2,999",spam,delivery_scam
+Your genuine order from Myntra can be tracked only inside the order page.,ham,legitimate
+Jio order 4582 has arrived and is ready for pickup.,ham,legitimate
+Your Axis account is blocked. Verify KYC immediately at secure-update.net,spam,banking_fraud
+Your SBI account is blocked. Verify KYC immediately at bit.ly/freegift,spam,banking_fraud
+Official security reminder: suspicious link detected. Open bit.ly/freegift to secure account,spam,phishing
+You have won 25 lakh rupees. Call now and share your Aadhaar,spam,lottery_scam
+Get free Jio voucher by forwarding this message,spam,promotional_spam
+"A purchase of Rs. 5,000 needs OTP approval. Do not share it.",ham,legitimate
+"FedEx shipment fee pending. Update address and pay Rs. 12,499",spam,delivery_scam
+Jio order 4582 has arrived and is ready for pickup.,ham,legitimate
+Please send the project file when you reach office.,ham,legitimate
+A purchase of Rs. 499 needs OTP approval. Do not share it.,ham,legitimate
+This is an official alert. Do not click unknown links or disclose account data.,ham,legitimate
+"Your UPI payment of Rs. 25,000 was successful.",ham,legitimate
+Amazon received your return request. Refund will reach the original account.,ham,legitimate
+Customs charge Rs. 499 for your Flipkart package,spam,delivery_scam
+The package arrived safely. Thank you for your order.,ham,legitimate
+"Congratulations, this prize is genuine. Processing fee can be paid safely",spam,lottery_scam
+Myntra offer details are available inside the official app.,ham,legitimate
+We cancelled the suspicious payment request. Check the official SBI app.,ham,legitimate
+Jio delivery update: package out for delivery today.,ham,legitimate
+FedEx shipment fee pending. Update address and pay Rs. 499,spam,delivery_scam
+Your genuine order from Flipkart can be tracked only inside the order page.,ham,legitimate
+Amazon order address issue. Pay small fee to avoid cancellation,spam,delivery_scam
+We cancelled the suspicious payment request. Check the official SBI app.,ham,legitimate
+Your ICICI debit card was used at a store. Not you? Call the number on the card.,ham,legitimate
+Myntra parcel is on hold. Pay Rs. 40 redelivery fee at kfcashback.xyz,spam,delivery_scam
+"Invest Rs. 25,000 today for guaranteed daily returns",spam,promotional_spam
+Official security reminder: suspicious link detected. Open secure-update.net to secure account,spam,phishing
+Official security reminder: suspicious link detected. Open bit.ly/freegift to secure account,spam,phishing
+"Official bank notice: we will never ask for OTP, but verify now for security",spam,banking_fraud
+"Prize notification: send bank details to transfer Rs. 12,499",spam,lottery_scam
+Get free Amazon voucher by forwarding this message,spam,promotional_spam
+This is an official alert. Do not click unknown links or disclose account data.,ham,legitimate
+SBI verification: enter the UPI PIN shown in your app only.,ham,legitimate
+"Limited period free recharge. Register now for Rs. 2,999",spam,promotional_spam
+"Congratulations, this prize is genuine. Processing fee can be paid safely",spam,lottery_scam
+Exclusive loan approved instantly. Apply here and share details,spam,promotional_spam
+Jio offer details are available inside the official app.,ham,legitimate
+Jio order 4582 has arrived and is ready for pickup.,ham,legitimate
+Security update: your account is safe. Do not reply or send your OTP.,ham,legitimate
+"Paytm lucky draw: selected winner! Pay registration fee to receive Rs. 1,250",spam,lottery_scam
+Please update the delivery address from the official Paytm order page.,ham,legitimate
+Please update the delivery address from the official Paytm order page.,ham,legitimate
+Paytm account suspended. Login immediately through secure-update.net,spam,phishing
+Customer safety notice: OTP is private. Send it to verify the refund,spam,otp_scam
+"A prize message arrived by SMS, but we ignored it. No prize fee needed.",ham,legitimate
+OTP 482916 received. Do not share this OTP with anyone.,ham,legitimate
+"Bank alert style message: no need to call, enter password at kfcashback.xyz",spam,phishing
+Lottery result approved. Send account number to collect your prize,spam,lottery_scam
+Please send the project file when you reach office.,ham,legitimate
+HDFC verification: enter the UPI PIN shown in your app only.,ham,legitimate
+"Bank alert style message: no need to call, enter password at kfcashback.xyz",spam,phishing
+"A purchase of Rs. 5,000 needs OTP approval. Do not share it.",ham,legitimate
+The package arrived safely. Thank you for your order.,ham,legitimate
+FedEx tracking: the courier attempted delivery; please collect from the local office.,ham,legitimate
+Courier cannot deliver. Confirm PIN and card details at bit.ly/freegift,spam,delivery_scam
+Rs. 499 refund pending. Share card details and UPI PIN at kfcashback.xyz,spam,banking_fraud
+Bank alert: login failure detected. We have not asked you to send card details.,ham,legitimate
+"Customs charge Rs. 1,250 for your Flipkart package",spam,delivery_scam
+"Congratulations Vikram! You won Rs. 5,000. Claim prize now at kfcashback.xyz",spam,lottery_scam
+Security update: your account is safe. Do not reply or send your OTP.,ham,legitimate
+FedEx shipment fee pending. Update address and pay Rs. 499,spam,delivery_scam
+We need the OTP you just received to complete verification. Do not share? Share it now,spam,otp_scam
+"Official bank notice: we will never ask for OTP, but verify now for security",spam,banking_fraud
+Paytm wallet blocked. Enter OTP and password to reactivate,spam,banking_fraud
+UPI declined: the receiver has not received Rs. 499. No OTP was required.,ham,legitimate
+"Bank alert style message: no need to call, enter password at kfcashback.xyz",spam,phishing
+Send received OTP and UPI PIN for account refund,spam,otp_scam
+Your genuine order from Paytm can be tracked only inside the order page.,ham,legitimate
+Bank customer care text: do not share OTP. Send OTP here to unlock,spam,banking_fraud
+"FedEx lucky draw: selected winner! Pay registration fee to receive Rs. 1,250",spam,lottery_scam
+Please update the delivery address from the official Paytm order page.,ham,legitimate
+Courier cannot deliver. Confirm PIN and card details at secure-update.net,spam,delivery_scam
+Your genuine order from Jio can be tracked only inside the order page.,ham,legitimate
+Amazon order address issue. Pay small fee to avoid cancellation,spam,delivery_scam
+Your SBI account verification is complete after branch KYC.,ham,legitimate
+"Paytm lucky draw: selected winner! Pay registration fee to receive Rs. 1,250",spam,lottery_scam
+Reminder: electricity bill payment is due on Friday.,ham,legitimate
+Update Paytm KYC in 2 hours or account will close: claim-prize.in,spam,phishing
+"Official bank notice: we will never ask for OTP, but verify now for security",spam,banking_fraud
+TCS vacancy open. WhatsApp resume and processing fee,spam,fake_job
+Your Axis debit card was used at a store. Not you? Call the number on the card.,ham,legitimate
+"Work from home for Wipro. Earn Rs. 1,250 daily. Pay joining fee",spam,fake_job
+Bank alert: login failure detected. We have not asked you to send card details.,ham,legitimate
+"Mom: Amit, call me after reaching home.",ham,legitimate
+"This is a real draw result. No bank PIN needed, but share Aadhaar to claim",spam,lottery_scam
+Your Bank of Baroda debit card was used at a store. Not you? Call the number on the card.,ham,legitimate
+Amazon order address issue. Pay small fee to avoid cancellation,spam,delivery_scam
+Send received OTP and UPI PIN for account refund,spam,otp_scam
+"Rs. 25,000 credited to your HDFC account. Reference 985621.",ham,legitimate
+Rs. 499 debited from ICICI account ending 1234. Balance is available.,ham,legitimate
+Immediate job offer: approve offer and deposit refundable amount,spam,fake_job
+"Customs charge Rs. 5,000 for your Flipkart package",spam,delivery_scam
+"Bank alert style message: no need to call, enter password at kfcashback.xyz",spam,phishing
+"A prize message arrived by SMS, but we ignored it. No prize fee needed.",ham,legitimate
+Hiring 100 candidates for online form filling. Send Rs. 500 registration,spam,fake_job
+Bank alert: login failure detected. We have not asked you to send card details.,ham,legitimate
+"Vikram, are you free for dinner tonight?",ham,legitimate
+Customer safety notice: OTP is private. Send it to verify the refund,spam,otp_scam
+FedEx shipment fee pending. Update address and pay Rs. 499,spam,delivery_scam
+Congratulations Rohan! You won Rs. 499. Claim prize now at secure-update.net,spam,lottery_scam
+"Mom: Vikram, call me after reaching home.",ham,legitimate
+Immediate job offer: approve offer and deposit refundable amount,spam,fake_job
+Amazon order 4582 has arrived and is ready for pickup.,ham,legitimate
+"Congratulations, this prize is genuine. Processing fee can be paid safely",spam,lottery_scam
+"The FedEx delivery agent called, but no payment link was sent.",ham,legitimate
+KYC documents can be submitted at your branch during working hours.,ham,legitimate
+Team meeting is moved to 4 PM tomorrow.,ham,legitimate
+Your HDFC debit card was used at a store. Not you? Call the number on the card.,ham,legitimate
+"The company HR asked for the interview details, with no joining fee.",ham,legitimate
+Reliance vacancy open. WhatsApp resume and processing fee,spam,fake_job
+Please send the project file when you reach office.,ham,legitimate
+Rs. 499 debited from SBI account ending 1234. Balance is available.,ham,legitimate
+OTP expires in 1 minute. Send 6 digit code to confirm Myntra cashback,spam,otp_scam
+Lottery winner message: legitimate prize; pay only by UPI to receive cash,spam,lottery_scam
+Happy birthday! Hope you have a wonderful day.,ham,legitimate
+Flipkart offer details are available inside the official app.,ham,legitimate
+Amazon parcel is on hold. Pay Rs. 40 redelivery fee at claim-prize.in,spam,delivery_scam
+Paytm order 4582 has arrived and is ready for pickup.,ham,legitimate
+"The FedEx delivery agent called, but no payment link was sent.",ham,legitimate
+Myntra delivery update: package out for delivery today.,ham,legitimate
+Get free Paytm voucher by forwarding this message,spam,promotional_spam
+Rs. 499 debited from Bank of Baroda account ending 1234. Balance is available.,ham,legitimate
+Flipkart order 4582 has arrived and is ready for pickup.,ham,legitimate
+Amazon offer details are available inside the official app.,ham,legitimate
+Flash sale: buy now and get 90 percent discount at secure-update.net,spam,promotional_spam
+Jio order 4582 has arrived and is ready for pickup.,ham,legitimate
+Send received OTP and UPI PIN for account refund,spam,otp_scam
+Amazon order 4582 has arrived and is ready for pickup.,ham,legitimate
+Jio delivery update: package out for delivery today.,ham,legitimate
+Please send the project file when you reach office.,ham,legitimate
+Update Paytm KYC in 2 hours or account will close: claim-prize.in,spam,phishing
+OTP expires in 1 minute. Send 6 digit code to confirm FedEx cashback,spam,otp_scam
+Your genuine Bank of Baroda account needs no card details. Update KYC with PIN now,spam,banking_fraud
+"Dear customer, never share OTP or UPI PIN. Bank support will not ask for these.",ham,legitimate
+"The company HR asked for the interview details, with no joining fee.",ham,legitimate
+Courier cannot deliver. Confirm PIN and card details at kfcashback.xyz,spam,delivery_scam
+"A prize message arrived by SMS, but we ignored it. No prize fee needed.",ham,legitimate
+"A prize message arrived by SMS, but we ignored it. No prize fee needed.",ham,legitimate
+KYC documents can be submitted at your branch during working hours.,ham,legitimate
+We need the OTP you just received to complete verification. Do not share? Share it now,spam,otp_scam
+This is an official alert. Do not click unknown links or disclose account data.,ham,legitimate
+Get free FedEx voucher by forwarding this message,spam,promotional_spam
+"The FedEx delivery agent called, but no payment link was sent.",ham,legitimate
+OTP expires in 1 minute. Send 6 digit code to confirm Amazon cashback,spam,otp_scam
+Forward OTP to receive Rs. 499 reward,spam,otp_scam
+Security update: your account is safe. Do not reply or send your OTP.,ham,legitimate
+KYC documents can be submitted at your branch during working hours.,ham,legitimate
+Paytm offer details are available inside the official app.,ham,legitimate
+We cancelled the suspicious payment request. Check the official ICICI app.,ham,legitimate
+"Earn Rs. 20,000 weekly from Amazon work. Investment required",spam,fake_job
+"Forward OTP to receive Rs. 12,499 reward",spam,otp_scam
+Exclusive loan approved instantly. Apply here and share details,spam,promotional_spam
+Amazon received your return request. Refund will reach the original account.,ham,legitimate
+KYC documents can be submitted at your branch during working hours.,ham,legitimate
+Myntra offer details are available inside the official app.,ham,legitimate
+"Vikram, are you free for dinner tonight?",ham,legitimate
+"Account-safe reminder: login at bit.ly/freegift, then enter UPI PIN",spam,banking_fraud
+"Congratulations, this prize is genuine. Processing fee can be paid safely",spam,lottery_scam
+FedEx parcel is on hold. Pay Rs. 40 redelivery fee at bit.ly/freegift,spam,delivery_scam
+Bank of Baroda verification: enter the UPI PIN shown in your app only.,ham,legitimate
+Wipro vacancy open. WhatsApp resume and processing fee,spam,fake_job
+OTP 482916 received. Do not share this OTP with anyone.,ham,legitimate
+Immediate job offer: approve offer and deposit refundable amount,spam,fake_job
+Flipkart offer details are available inside the official app.,ham,legitimate
+Your genuine order from Flipkart can be tracked only inside the order page.,ham,legitimate
+Send received OTP and UPI PIN for account refund,spam,otp_scam
+"Account-safe reminder: login at bit.ly/freegift, then enter UPI PIN",spam,banking_fraud
+"Customs charge Rs. 12,499 for your Flipkart package",spam,delivery_scam
+"Rs. 2,999 credited to your SBI account. Reference 985621.",ham,legitimate
+Reminder: electricity bill payment is due on Friday.,ham,legitimate
+We cancelled the suspicious payment request. Check the official HDFC app.,ham,legitimate
+FedEx offer details are available inside the official app.,ham,legitimate
+Your ICICI account is blocked. Verify KYC immediately at kfcashback.xyz,spam,banking_fraud
+Please send the project file when you reach office.,ham,legitimate
+Accenture vacancy open. WhatsApp resume and processing fee,spam,fake_job
+"Mom: Rohan, call me after reaching home.",ham,legitimate
+This is an official alert. Do not click unknown links or disclose account data.,ham,legitimate
+"Rs. 5,000 credited to your ICICI account. Reference 985621.",ham,legitimate
+"Kavya, are you free for dinner tonight?",ham,legitimate
+"Earn Rs. 20,000 weekly from Amazon work. Investment required",spam,fake_job
+Send received OTP and UPI PIN for account refund,spam,otp_scam
+"Forward OTP to receive Rs. 2,999 reward",spam,otp_scam
+"Invest Rs. 25,000 today for guaranteed daily returns",spam,promotional_spam
+"A purchase of Rs. 2,999 needs OTP approval. Do not share it.",ham,legitimate
+Amazon account locked. Verify credentials at bit.ly/freegift,spam,phishing
+"A purchase of Rs. 5,000 needs OTP approval. Do not share it.",ham,legitimate
+Paytm wallet blocked. Enter OTP and password to reactivate,spam,banking_fraud
+Courier cannot deliver. Confirm PIN and card details at secure-update.net,spam,delivery_scam
+"You received a prize confirmation by email, but no fees are requested.",ham,legitimate
+"Rs. 12,499 debited from Bank of Baroda account ending 1234. Balance is available.",ham,legitimate
+Your ICICI debit card was used at a store. Not you? Call the number on the card.,ham,legitimate
+Wipro vacancy open. WhatsApp resume and processing fee,spam,fake_job
+Flipkart offer details are available inside the official app.,ham,legitimate
+"You received a prize confirmation by email, but no fees are requested.",ham,legitimate
+Exclusive loan approved instantly. Apply here and share details,spam,promotional_spam
+"You received a prize confirmation by email, but no fees are requested.",ham,legitimate
+OTP 482916 received. Do not share this OTP with anyone.,ham,legitimate
+OTP 482916 received. Do not share this OTP with anyone.,ham,legitimate
+KYC documents can be submitted at your branch during working hours.,ham,legitimate
+KYC documents can be submitted at your branch during working hours.,ham,legitimate
+Jio order 4582 has arrived and is ready for pickup.,ham,legitimate
+"Rs. 12,499 refund pending. Share card details and UPI PIN at bit.ly/freegift",spam,banking_fraud
+Please update the delivery address from the official Paytm order page.,ham,legitimate
+"Dear customer, your account will be frozen. Update account details at claim-prize.in",spam,banking_fraud
+Your genuine order from FedEx can be tracked only inside the order page.,ham,legitimate
+"Congratulations, this prize is genuine. Processing fee can be paid safely",spam,lottery_scam
+Your genuine order from Paytm can be tracked only inside the order page.,ham,legitimate
+"Limited period free recharge. Register now for Rs. 2,999",spam,promotional_spam
+Rs. 499 debited from SBI account ending 1234. Balance is available.,ham,legitimate
+"Invest Rs. 2,999 today for guaranteed daily returns",spam,promotional_spam
+"This is a real draw result. No bank PIN needed, but share Aadhaar to claim",spam,lottery_scam
+Send received OTP and UPI PIN for account refund,spam,otp_scam
+Flipkart parcel is on hold. Pay Rs. 40 redelivery fee at bit.ly/freegift,spam,delivery_scam
+Update Paytm KYC in 2 hours or account will close: claim-prize.in,spam,phishing
+"You received a prize confirmation by email, but no fees are requested.",ham,legitimate
+Official security reminder: suspicious link detected. Open claim-prize.in to secure account,spam,phishing
+Caller asking for OTP: verify it with us immediately,spam,otp_scam
+Myntra order 4582 has arrived and is ready for pickup.,ham,legitimate
+Reminder: electricity bill payment is due on Friday.,ham,legitimate
+Paytm account suspended. Login immediately through bit.ly/freegift,spam,phishing
+Paytm wallet blocked. Enter OTP and password to reactivate,spam,banking_fraud
+"Customs charge Rs. 25,000 for your Flipkart package",spam,delivery_scam
+"Bank alert style message: no need to call, enter password at bit.ly/freegift",spam,phishing
+Flipkart offer details are available inside the official app.,ham,legitimate
+"Official bank notice: we will never ask for OTP, but verify now for security",spam,banking_fraud
+"Prize notification: send bank details to transfer Rs. 2,999",spam,lottery_scam
+"Limited period free recharge. Register now for Rs. 2,999",spam,promotional_spam
+Update Paytm KYC in 2 hours or account will close: kfcashback.xyz,spam,phishing
+Bank alert: login failure detected. We have not asked you to send card details.,ham,legitimate
+"The FedEx delivery agent called, but no payment link was sent.",ham,legitimate
+"UPI declined: the receiver has not received Rs. 12,499. No OTP was required.",ham,legitimate
+"Neha, are you free for dinner tonight?",ham,legitimate
+Happy birthday! Hope you have a wonderful day.,ham,legitimate
+"FedEx shipment fee pending. Update address and pay Rs. 1,250",spam,delivery_scam
+"Your UPI payment of Rs. 1,250 was successful.",ham,legitimate
+"Sneha, are you free for dinner tonight?",ham,legitimate
+FedEx shipment fee pending. Update address and pay Rs. 499,spam,delivery_scam
+"Congratulations, this prize is genuine. Processing fee can be paid safely",spam,lottery_scam
+Send received OTP and UPI PIN for account refund,spam,otp_scam
+We need the OTP you just received to complete verification. Do not share? Share it now,spam,otp_scam
+HDFC verification: enter the UPI PIN shown in your app only.,ham,legitimate
+You have won 25 lakh rupees. Call now and share your Aadhaar,spam,lottery_scam
+"Account-safe reminder: login at kfcashback.xyz, then enter UPI PIN",spam,banking_fraud
+Immediate job offer: approve offer and deposit refundable amount,spam,fake_job
+Rs. 499 debited from Axis account ending 1234. Balance is available.,ham,legitimate
+Reminder: electricity bill payment is due on Friday.,ham,legitimate
+"UPI declined: the receiver has not received Rs. 1,250. No OTP was required.",ham,legitimate
+Your Axis card is still active. Verify only through the official app.,ham,legitimate
+Courier cannot deliver. Confirm PIN and card details at kfcashback.xyz,spam,delivery_scam
+FedEx shipment fee pending. Update address and pay Rs. 499,spam,delivery_scam
+"Customs charge Rs. 2,999 for your Flipkart package",spam,delivery_scam
+Flipkart order 4582 has arrived and is ready for pickup.,ham,legitimate
+"Customs charge Rs. 2,999 for your Flipkart package",spam,delivery_scam
+The package arrived safely. Thank you for your order.,ham,legitimate
+"The FedEx delivery agent called, but no payment link was sent.",ham,legitimate
+FedEx delivery update: package out for delivery today.,ham,legitimate
+"Official bank notice: we will never ask for OTP, but verify now for security",spam,banking_fraud
+FedEx delivery update: package out for delivery today.,ham,legitimate
+Your genuine order from Flipkart can be tracked only inside the order page.,ham,legitimate
+Rs. 499 refund pending. Share card details and UPI PIN at claim-prize.in,spam,banking_fraud
+Work from home for TCS. Earn Rs. 499 daily. Pay joining fee,spam,fake_job
+"FedEx shipment fee pending. Update address and pay Rs. 1,250",spam,delivery_scam
+"Limited period free recharge. Register now for Rs. 1,250",spam,promotional_spam
+"The FedEx delivery agent called, but no payment link was sent.",ham,legitimate
+"Invest Rs. 25,000 today for guaranteed daily returns",spam,promotional_spam
+Exclusive loan approved instantly. Apply here and share details,spam,promotional_spam
+"Congratulations, this prize is genuine. Processing fee can be paid safely",spam,lottery_scam
+Amazon received your return request. Refund will reach the original account.,ham,legitimate
+Paytm account suspended. Login immediately through kfcashback.xyz,spam,phishing
+Security alert: confirm password and Aadhaar at claim-prize.in,spam,phishing
+You have won 25 lakh rupees. Call now and share your Aadhaar,spam,lottery_scam
+Your ICICI debit card was used at a store. Not you? Call the number on the card.,ham,legitimate
+We cancelled the suspicious payment request. Check the official SBI app.,ham,legitimate
+"FedEx shipment fee pending. Update address and pay Rs. 2,999",spam,delivery_scam
+"Bank alert style message: no need to call, enter password at bit.ly/freegift",spam,phishing
+"Forward OTP to receive Rs. 5,000 reward",spam,otp_scam
+KYC documents can be submitted at your branch during working hours.,ham,legitimate
+Customer safety notice: OTP is private. Send it to verify the refund,spam,otp_scam
+Paytm account suspended. Login immediately through claim-prize.in,spam,phishing
+"FedEx shipment fee pending. Update address and pay Rs. 25,000",spam,delivery_scam
+Amazon delivery update: package out for delivery today.,ham,legitimate
+KYC documents can be submitted at your branch during working hours.,ham,legitimate
+Amazon order address issue. Pay small fee to avoid cancellation,spam,delivery_scam
+Caller asking for OTP: verify it with us immediately,spam,otp_scam
+HDFC customer verification required. Enter card PIN on claim-prize.in,spam,phishing
+"Work from home for TCS. Earn Rs. 1,250 daily. Pay joining fee",spam,fake_job
+"Earn Rs. 20,000 weekly from Amazon work. Investment required",spam,fake_job
+"Jio lucky draw: selected winner! Pay registration fee to receive Rs. 2,999",spam,lottery_scam
+"FedEx shipment fee pending. Update address and pay Rs. 1,250",spam,delivery_scam
+Get free FedEx voucher by forwarding this message,spam,promotional_spam
+Bank alert: login failure detected. We have not asked you to send card details.,ham,legitimate
+Bank alert: login failure detected. We have not asked you to send card details.,ham,legitimate
+Amazon received your return request. Refund will reach the original account.,ham,legitimate
+"Amit, are you free for dinner tonight?",ham,legitimate
+Team meeting is moved to 4 PM tomorrow.,ham,legitimate
+Paytm wallet blocked. Enter OTP and password to reactivate,spam,banking_fraud
+Paytm wallet blocked. Enter OTP and password to reactivate,spam,banking_fraud
+Amazon offer details are available inside the official app.,ham,legitimate
+A purchase of Rs. 499 needs OTP approval. Do not share it.,ham,legitimate
+We cancelled the suspicious payment request. Check the official HDFC app.,ham,legitimate
+Your genuine order from Flipkart can be tracked only inside the order page.,ham,legitimate
+"The company HR asked for the interview details, with no joining fee.",ham,legitimate
+Update Paytm KYC in 2 hours or account will close: bit.ly/freegift,spam,phishing
+"Forward OTP to receive Rs. 12,499 reward",spam,otp_scam
+Amazon parcel is on hold. Pay Rs. 40 redelivery fee at secure-update.net,spam,delivery_scam
+"Dear customer, never share OTP or UPI PIN. Bank support will not ask for these.",ham,legitimate
+"Rs. 12,499 refund pending. Share card details and UPI PIN at secure-update.net",spam,banking_fraud
+Lottery winner message: legitimate prize; pay only by UPI to receive cash,spam,lottery_scam
+Hiring 100 candidates for online form filling. Send Rs. 500 registration,spam,fake_job
+Please send the project file when you reach office.,ham,legitimate
+Happy birthday! Hope you have a wonderful day.,ham,legitimate
+Your SBI account verification is complete after branch KYC.,ham,legitimate
+Amazon parcel is on hold. Pay Rs. 40 redelivery fee at claim-prize.in,spam,delivery_scam
+We need the OTP you just received to complete verification. Do not share? Share it now,spam,otp_scam
+HDFC customer verification required. Enter card PIN on kfcashback.xyz,spam,phishing
+Update Paytm KYC in 2 hours or account will close: bit.ly/freegift,spam,phishing
+Happy birthday! Hope you have a wonderful day.,ham,legitimate
+"Dear customer, never share OTP or UPI PIN. Bank support will not ask for these.",ham,legitimate
+Flipkart parcel is on hold. Pay Rs. 40 redelivery fee at secure-update.net,spam,delivery_scam
+Security update: your account is safe. Do not reply or send your OTP.,ham,legitimate
+Exclusive loan approved instantly. Apply here and share details,spam,promotional_spam
+"The company HR asked for the interview details, with no joining fee.",ham,legitimate
+"You received a prize confirmation by email, but no fees are requested.",ham,legitimate
+"You received a prize confirmation by email, but no fees are requested.",ham,legitimate
+Team meeting is moved to 4 PM tomorrow.,ham,legitimate
+Axis verification: enter the UPI PIN shown in your app only.,ham,legitimate
+"The company HR asked for the interview details, with no joining fee.",ham,legitimate
+This is an official alert. Do not click unknown links or disclose account data.,ham,legitimate
+"Bank alert style message: no need to call, enter password at bit.ly/freegift",spam,phishing
+FedEx tracking: the courier attempted delivery; please collect from the local office.,ham,legitimate
+Invest Rs. 499 today for guaranteed daily returns,spam,promotional_spam
+Exclusive loan approved instantly. Apply here and share details,spam,promotional_spam
+Accenture vacancy open. WhatsApp resume and processing fee,spam,fake_job
+"A purchase of Rs. 25,000 needs OTP approval. Do not share it.",ham,legitimate
+The package arrived safely. Thank you for your order.,ham,legitimate
+Jio lucky draw: selected winner! Pay registration fee to receive Rs. 499,spam,lottery_scam
+SBI verification: enter the UPI PIN shown in your app only.,ham,legitimate
+"FedEx shipment fee pending. Update address and pay Rs. 25,000",spam,delivery_scam
+Do not share OTP with anyone. Reply with OTP now for cashback,spam,otp_scam
+Send received OTP and UPI PIN for account refund,spam,otp_scam
+Paytm account suspended. Login immediately through kfcashback.xyz,spam,phishing
+Paytm offer details are available inside the official app.,ham,legitimate
+"This is a real draw result. No bank PIN needed, but share Aadhaar to claim",spam,lottery_scam
+KYC documents can be submitted at your branch during working hours.,ham,legitimate
+"Dear customer, never share OTP or UPI PIN. Bank support will not ask for these.",ham,legitimate
+We need the OTP you just received to complete verification. Do not share? Share it now,spam,otp_scam
+"This is a real draw result. No bank PIN needed, but share Aadhaar to claim",spam,lottery_scam
+Do not share OTP with anyone. Reply with OTP now for cashback,spam,otp_scam
+Paytm account suspended. Login immediately through kfcashback.xyz,spam,phishing
+Limited period free recharge. Register now for Rs. 499,spam,promotional_spam
+FedEx order 4582 has arrived and is ready for pickup.,ham,legitimate
+We cancelled the suspicious payment request. Check the official SBI app.,ham,legitimate
+"The company HR asked for the interview details, with no joining fee.",ham,legitimate
+Caller asking for OTP: verify it with us immediately,spam,otp_scam
+Your ICICI debit card was used at a store. Not you? Call the number on the card.,ham,legitimate
+Amazon parcel is on hold. Pay Rs. 40 redelivery fee at secure-update.net,spam,delivery_scam
+Security alert: confirm password and Aadhaar at secure-update.net,spam,phishing
+Official security reminder: suspicious link detected. Open claim-prize.in to secure account,spam,phishing
+Security update: your account is safe. Do not reply or send your OTP.,ham,legitimate
+Hiring 100 candidates for online form filling. Send Rs. 500 registration,spam,fake_job
+Happy birthday! Hope you have a wonderful day.,ham,legitimate
+Lottery winner message: legitimate prize; pay only by UPI to receive cash,spam,lottery_scam
+Happy birthday! Hope you have a wonderful day.,ham,legitimate
+Reminder: electricity bill payment is due on Friday.,ham,legitimate
+Update Paytm KYC in 2 hours or account will close: kfcashback.xyz,spam,phishing
+Customer safety notice: OTP is private. Send it to verify the refund,spam,otp_scam
+Happy birthday! Hope you have a wonderful day.,ham,legitimate
+Immediate job offer: approve offer and deposit refundable amount,spam,fake_job
+Amazon received your return request. Refund will reach the original account.,ham,legitimate
+Update Paytm KYC in 2 hours or account will close: kfcashback.xyz,spam,phishing
+"Kavya, are you free for dinner tonight?",ham,legitimate
+Please send the project file when you reach office.,ham,legitimate
+The package arrived safely. Thank you for your order.,ham,legitimate
+"Bank alert style message: no need to call, enter password at secure-update.net",spam,phishing
+Your genuine SBI account needs no card details. Update KYC with PIN now,spam,banking_fraud
+Flash sale: buy now and get 90 percent discount at claim-prize.in,spam,promotional_spam
