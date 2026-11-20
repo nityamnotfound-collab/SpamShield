@@ -145,8 +145,9 @@ SQLite database folder is created as needed.
 
 The GitHub repository is configured for both platforms. `render.yaml` defines
 a Render web service, and `vercel.json` routes Vercel requests to the `wsgi.py`
-Flask function. Vercel installs the pinned dependencies from `requirements.txt`;
-the function bundles the model, templates, and static assets it needs.
+Flask function. Vercel installs the pinned dependencies from `pyproject.toml`;
+`requirements.txt` mirrors them for local setup and Render. The function bundles
+the model, templates, and static assets it needs.
 
 Configure MongoDB before deploying. Add the Atlas URI as a secret environment
 variable in each platform's dashboard; do not put real credentials in
