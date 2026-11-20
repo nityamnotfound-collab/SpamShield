@@ -144,10 +144,9 @@ SQLite database folder is created as needed.
 ## Deploy with Render and Vercel
 
 The GitHub repository is configured for both platforms. `render.yaml` defines
-a Render web service, and `vercel.json` configures the Flask function and its
-required files. Vercel runs `vercel_build.py` to copy CSS, JavaScript, and image
-assets into its `public/` directory; that directory is generated during the
-build and is not committed.
+a Render web service, and `vercel.json` routes Vercel requests to the `wsgi.py`
+Flask function. Vercel installs the pinned dependencies from `requirements.txt`;
+the function bundles the model, templates, and static assets it needs.
 
 Configure MongoDB before deploying. Add the Atlas URI as a secret environment
 variable in each platform's dashboard; do not put real credentials in
@@ -173,19 +172,21 @@ Atlas for persistent scan history.
 
 1. In the [Vercel Dashboard](https://vercel.com/dashboard/), choose **Add New →
    Project** and import `nityamnotfound-collab/SpamShield` from GitHub.
-2. Use the repository root as the project root and allow Vercel to detect the
-   Flask/Python application. The checked-in `vercel.json` and `vercel_build.py`
-   provide the function and static-asset configuration.
+2. Use the repository root as the project root. The checked-in `vercel.json`
+   builds `wsgi.py` with `@vercel/python` and routes all requests to it.
 3. In **Project Settings → Environment Variables**, set `MONGODB_URI`,
    `MONGODB_DB_NAME` (`spamshield`), and a private `SECRET_KEY` for the
    environments you will deploy (Production, and Preview if needed).
 4. Deploy the project and open the deployment URL shown by Vercel.
 
 Vercel's function filesystem is not persistent, so configure MongoDB Atlas
-there; do not rely on the SQLite fallback for hosted scan history. Configure
-Atlas Network Access for the outbound connections used by your Render and
-Vercel deployments. Use the platforms' current networking options and avoid
-opening database access broadly.
+there; do not rely on the SQLite fallback for hosted scan history. The SQLite
+fallback writes to the local filesystem, which is not writable/persistent for
+Vercel functions. `load_dotenv()` is harmless on Vercel, but `.env` is not
+deployed; set the variables in Project Settings instead. Configure Atlas
+Network Access for the outbound connections used by your Render and Vercel
+deployments. Use the platforms' current networking options and avoid opening
+database access broadly.
 
 If both deployments use the same Atlas database URI and database name, they
 share scan history. Separate database names or clusters keep their histories
