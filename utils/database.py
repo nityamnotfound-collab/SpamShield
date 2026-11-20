@@ -39,8 +39,17 @@ else:
 
 # Build the database path relative to this file, not the current working directory.
 BASE_DIRECTORY = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-DATABASE_DIRECTORY = os.path.join(BASE_DIRECTORY, "database")
+if os.getenv("VERCEL"):
+    DATABASE_DIRECTORY = "/tmp"
+else:
+    DATABASE_DIRECTORY = os.path.join(BASE_DIRECTORY, "database")
 DATABASE_PATH = os.path.join(DATABASE_DIRECTORY, "spamshield.db")
+
+if os.getenv("VERCEL") and not USE_MONGODB:
+    logger.warning(
+        "MONGODB_URI is not configured; using temporary SQLite storage on Vercel. "
+        "Scan history will not be persistent."
+    )
 
 
 def get_connection():

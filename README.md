@@ -180,10 +180,11 @@ Atlas for persistent scan history.
    environments you will deploy (Production, and Preview if needed).
 4. Deploy the project and open the deployment URL shown by Vercel.
 
-Vercel's function filesystem is not persistent, so configure MongoDB Atlas
-there; do not rely on the SQLite fallback for hosted scan history. The SQLite
-fallback writes to the local filesystem, which is not writable/persistent for
-Vercel functions. `load_dotenv()` is harmless on Vercel, but `.env` is not
+Vercel's function filesystem is not persistent. If `MONGODB_URI` is missing,
+the SQLite fallback uses `/tmp` so requests do not try to write into the
+read-only deployment directory, but its data is temporary and not shared
+reliably between function instances. Configure MongoDB Atlas for persistent
+scan history. `load_dotenv()` is harmless on Vercel, but `.env` is not
 deployed; set the variables in Project Settings instead. Configure Atlas
 Network Access for the outbound connections used by your Render and Vercel
 deployments. Use the platforms' current networking options and avoid opening
