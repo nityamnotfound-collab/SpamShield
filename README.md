@@ -30,6 +30,7 @@ SpamShield/
 |-- test_dashboard_stats.py
 |-- train_model.py
 |-- requirements.txt
+|-- requirements-dev.txt
 |-- render.yaml
 |-- vercel.json
 |-- vercel_build.py
@@ -82,7 +83,7 @@ containing `requirements.txt`).
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1
 python -m pip install --upgrade pip
-pip install -r requirements.txt
+pip install -r requirements-dev.txt
 ```
 
 If PowerShell prevents environment activation, use Command Prompt instead:
@@ -97,7 +98,7 @@ If PowerShell prevents environment activation, use Command Prompt instead:
 python3 -m venv .venv
 source .venv/bin/activate
 python -m pip install --upgrade pip
-pip install -r requirements.txt
+pip install -r requirements-dev.txt
 ```
 
 ## Configure environment variables
@@ -171,8 +172,10 @@ startup error is logged; the app never falls back to local storage.
 The GitHub repository is configured for both platforms. `render.yaml` defines
 a Render web service, and `vercel.json` routes Vercel requests to the `wsgi.py`
 Flask function. Vercel installs the pinned dependencies from `pyproject.toml`;
-`requirements.txt` mirrors them for local setup and Render. The function bundles
-the model, templates, and static assets it needs.
+`requirements.txt` mirrors runtime dependencies for Render. For local
+development and dataset generation, `requirements-dev.txt` also installs the
+training-only pandas dependency. The function bundles the model, templates,
+and static assets it needs.
 
 Configure MongoDB before deploying. Add the Atlas URI as a secret environment
 variable in each platform's dashboard; do not put real credentials in
@@ -317,7 +320,7 @@ existing account before running it; it only clears that account's scans.
 - **Missing model file:** Run `python make_dataset.py`, then
   `python train_model.py`.
 - **Missing Python package:** Activate `.venv` and run
-  `pip install -r requirements.txt`.
+  `pip install -r requirements-dev.txt`.
 - **Atlas connection timeout or authentication failure:** Check the cluster
   address, database username/password, password encoding, and Atlas Network
   Access allowlist. Restart the app after editing `.env`.
