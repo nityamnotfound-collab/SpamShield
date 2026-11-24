@@ -1,7 +1,10 @@
 """Exercise SpamShield API routes with Flask's test client and isolated storage."""
 
+import os
 from datetime import datetime, timedelta, timezone
 
+if not os.getenv("MONGODB_URI"):
+    os.environ["MONGODB_URI"] = "mongodb://localhost:27017/spamshield-test"
 import app as spamshield
 from werkzeug.security import generate_password_hash
 from utils.scam_categories import SCAM_CATEGORIES

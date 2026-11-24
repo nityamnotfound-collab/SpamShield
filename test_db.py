@@ -1,6 +1,8 @@
 import os
 
-from utils import database
+from dotenv import load_dotenv
+
+load_dotenv()
 
 
 def print_check(name, passed):
@@ -10,6 +12,12 @@ def print_check(name, passed):
 
 
 def main():
+    if not os.getenv("MONGODB_URI"):
+        print("Set MONGODB_URI before running this database diagnostic.")
+        return
+
+    from utils import database
+
     database.init_db()
     email = os.getenv("TEST_USER_EMAIL", "").strip().lower()
     user = database.get_user_by_email(email) if email else None
@@ -18,10 +26,7 @@ def main():
         return
     user_id = user["id"]
 
-    if database.USE_MONGODB:
-        print("Database in use: MongoDB")
-    else:
-        print("Database in use: SQLite")
+    print("Database in use: MongoDB")
 
     message_scan_id = None
     fetched_scan = None
