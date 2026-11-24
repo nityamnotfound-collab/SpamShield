@@ -1,0 +1,43 @@
+{% extends "base_public.html" %}
+{% block title %}Log in | SpamShield{% endblock %}
+{% block breadcrumbs %}
+<nav class="breadcrumbs" aria-label="Breadcrumb" data-i18n-aria="Breadcrumb"><a href="{{ url_for('home') }}" data-i18n="Home">Home</a><i class="fa-solid fa-chevron-right" aria-hidden="true"></i><span aria-current="page" data-i18n="Log in">Log in</span></nav>
+{% endblock %}
+{% block content %}
+<main class="auth-page">
+    <section class="panel auth-card">
+        <div class="auth-heading">
+            <span class="auth-icon" aria-hidden="true"><i class="fa-solid fa-arrow-right-to-bracket"></i></span>
+            <p class="eyebrow" data-i18n="YOUR SPAMSHIELD ACCOUNT">YOUR SPAMSHIELD ACCOUNT</p>
+            <h1 data-i18n="Log in">Log in</h1>
+            <p data-i18n="Continue to your personal scanning workspace.">Continue to your personal scanning workspace.</p>
+        </div>
+        <form class="auth-form" id="login-form" method="post" action="{{ url_for('login') }}" novalidate>
+            <div class="form-field">
+                <label for="login-email" data-i18n="Email">Email</label>
+                <input id="login-email" name="email" type="email" autocomplete="email" value="{{ email or '' }}" required>
+                <span class="field-error" id="login-email-error" hidden></span>
+            </div>
+            <div class="form-field">
+                <label for="login-password" data-i18n="Password">Password</label>
+                <div class="password-control">
+                    <input id="login-password" name="password" type="password" autocomplete="current-password" required>
+                    <button class="password-toggle" id="toggle-login-password" type="button" data-password-toggle="login-password" aria-label="Show password" data-i18n-aria="Show password" aria-pressed="false" data-i18n="Show">Show</button>
+                </div>
+                <span class="field-error" id="login-password-error" hidden></span>
+            </div>
+            <label class="checkbox-row" for="remember-me">
+                <input id="remember-me" name="remember_me" type="checkbox">
+                <span data-i18n="Keep me signed in for 7 days">Keep me signed in for 7 days</span>
+            </label>
+            <p class="auth-error" id="auth-error" role="alert" data-i18n-dynamic {% if not error %}hidden{% endif %}>{{ error or '' }}</p>
+            <p class="lock-message" id="login-lock-message" role="status" data-i18n-dynamic {% if not account_locked %}hidden{% endif %}>{{ lock_message or 'Too many failed attempts. Try again in five minutes.' }}</p>
+            <button class="button button-primary auth-submit" id="login-submit" type="submit">
+                <span class="button-label" data-i18n="Log in">Log in</span>
+                <span class="button-loading" id="login-spinner" role="status" hidden><i class="fa-solid fa-spinner fa-spin" aria-hidden="true"></i> <span data-i18n="Signing in...">Signing in...</span></span>
+            </button>
+        </form>
+        <p class="auth-switch"><span data-i18n="New to SpamShield?">New to SpamShield?</span> <a href="{{ url_for('register') }}" data-i18n="Create an account">Create an account</a>.</p>
+    </section>
+</main>
+{% endblock %}

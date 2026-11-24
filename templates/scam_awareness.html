@@ -1,0 +1,11 @@
+{% extends "base_public.html" %}
+{% block title %}Scam Awareness | SpamShield{% endblock %}
+{% block head_scripts %}
+<script defer src="{{ url_for('static', filename='js/scam_awareness.js') }}"></script>
+{% endblock %}
+{% block breadcrumbs %}
+<nav class="breadcrumbs" aria-label="Breadcrumb" data-i18n-aria="Breadcrumb"><a href="{{ url_for('home') }}" data-i18n="Home">Home</a><i class="fa-solid fa-chevron-right" aria-hidden="true"></i><span aria-current="page" data-i18n="Scam Awareness">Scam Awareness</span></nav>
+{% endblock %}
+{% block content %}
+<main class="section-shell inner-page awareness-page" id="scam-awareness-page"></main>
+{% endblock %}

@@ -1,87 +1,153 @@
-{# Stable IDs: dashboard-page, total-messages, safe-count, spam-count, suspicious-count, urls-analysed, spam-safe-chart, recent-scans-body, dashboard-error #}
-{% extends "base.html" %}
-
+{# Stable IDs: dashboard-page, dashboard-range, dashboard-refresh, last-updated, dashboard-error, total-messages, safe-count, spam-count, suspicious-count, urls-analysed, scans-per-day-chart, result-chart, source-chart, category-chart, top-keywords, recent-scans-body, dashboard-details-modal #}
+{% extends "base_app.html" %}
 {% block title %}Dashboard | SpamShield{% endblock %}
-
-{% block head_scripts %}
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+{% block head_scripts %}<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>{% endblock %}
+{% block breadcrumbs %}
+<nav class="breadcrumbs" aria-label="Breadcrumb" data-i18n-aria="Breadcrumb"><span data-i18n="Workspace">Workspace</span><i class="fa-solid fa-chevron-right" aria-hidden="true"></i><span aria-current="page" data-i18n="Dashboard">Dashboard</span></nav>
 {% endblock %}
-
 {% block content %}
-<main class="section-shell dashboard-page" id="dashboard-page">
+<main class="section-shell app-page dashboard-page" id="dashboard-page" aria-busy="true">
     <header class="page-heading dashboard-heading">
         <div>
-            <p class="eyebrow">YOUR LOCAL ACTIVITY</p>
-            <h1>Dashboard</h1>
-            <p>Scan totals and recent activity from this SpamShield installation.</p>
+            <p class="eyebrow" data-i18n="YOUR ACTIVITY">YOUR ACTIVITY</p>
+            <h1 data-i18n="Welcome, {name}" data-i18n-name="{{ user_name }}">Welcome, {{ user_name }}</h1>
+            <p data-i18n="A private summary of your saved message and URL checks.">A private summary of your saved message and URL checks.</p>
         </div>
         <div class="quick-actions">
-            <a class="button button-primary" href="{{ url_for('message_scanner') }}">
-                <i class="fa-solid fa-message"></i> Scan a message
-            </a>
-            <a class="button button-secondary" href="{{ url_for('url_scanner') }}">
-                <i class="fa-solid fa-link"></i> Check a URL
-            </a>
+            <a class="button button-primary" href="{{ url_for('message_scanner') }}"><i class="fa-solid fa-message" aria-hidden="true"></i> <span data-i18n="Message Check">Message Check</span></a>
+            <a class="button button-outline" href="{{ url_for('url_scanner') }}"><i class="fa-solid fa-link" aria-hidden="true"></i> <span data-i18n="Link Check">Link Check</span></a>
         </div>
     </header>
 
-    <p class="dashboard-error" id="dashboard-error" role="alert" hidden></p>
-
-    <section class="stats-grid" aria-label="Scan totals">
-        <article class="stat-card">
-            <span class="stat-icon blue"><i class="fa-solid fa-message"></i></span>
-            <div><span class="stat-label">Total messages</span><strong id="total-messages"></strong></div>
-        </article>
-        <article class="stat-card">
-            <span class="stat-icon green"><i class="fa-solid fa-circle-check"></i></span>
-            <div><span class="stat-label">Safe</span><strong id="safe-count"></strong></div>
-        </article>
-        <article class="stat-card">
-            <span class="stat-icon red"><i class="fa-solid fa-ban"></i></span>
-            <div><span class="stat-label">Spam</span><strong id="spam-count"></strong></div>
-        </article>
-        <article class="stat-card">
-            <span class="stat-icon amber"><i class="fa-solid fa-triangle-exclamation"></i></span>
-            <div><span class="stat-label">Suspicious</span><strong id="suspicious-count"></strong></div>
-        </article>
-        <article class="stat-card">
-            <span class="stat-icon purple"><i class="fa-solid fa-link"></i></span>
-            <div><span class="stat-label">URLs analysed</span><strong id="urls-analysed"></strong></div>
-        </article>
+    <section class="dashboard-controls" aria-label="Dashboard controls" data-i18n-aria="Dashboard controls">
+        <label for="dashboard-range"><span data-i18n="Activity range">Activity range</span>
+            <select id="dashboard-range">
+                <option value="7d" data-i18n="Last 7 days">Last 7 days</option>
+                <option value="30d" data-i18n="Last 30 days">Last 30 days</option>
+                <option value="all" data-i18n="All time">All time</option>
+            </select>
+        </label>
+        <button class="button button-outline" id="dashboard-refresh" type="button">
+            <i class="fa-solid fa-rotate" aria-hidden="true"></i> <span data-i18n="Refresh">Refresh</span>
+        </button>
+        <p class="last-updated"><span data-i18n="Last updated:">Last updated:</span> <time id="last-updated" aria-live="polite" data-i18n="Loading">Loading</time></p>
     </section>
 
-    <section class="dashboard-grid">
-        <article class="panel chart-panel">
-            <div class="panel-heading">
-                <div><p class="eyebrow">CLASSIFICATION COUNTS</p><h2>Safe vs. spam</h2></div>
-            </div>
-            <div class="chart-container">
-                <canvas id="spam-safe-chart" aria-label="Safe versus spam scan counts" role="img"></canvas>
-            </div>
-        </article>
+    <p class="dashboard-error inline-alert" id="dashboard-error" role="alert" hidden></p>
 
-        <article class="panel activity-panel">
-            <div class="panel-heading">
-                <div><p class="eyebrow">LATEST ACTIVITY</p><h2>Recent scans</h2></div>
-                <a class="text-link" href="{{ url_for('history_page') }}">View history <i class="fa-solid fa-arrow-right"></i></a>
-            </div>
-            <div class="table-scroll">
-                <table class="activity-table">
-                    <thead>
-                        <tr>
-                            <th scope="col">Type</th>
-                            <th scope="col">Content</th>
-                            <th scope="col">Result</th>
-                            <th scope="col">Score</th>
-                            <th scope="col">Date</th>
-                        </tr>
-                    </thead>
-                    <tbody id="recent-scans-body"></tbody>
-                </table>
-            </div>
-        </article>
+    <section class="empty-state dashboard-empty" id="dashboard-empty" aria-live="polite" hidden>
+        <span class="empty-state-icon"><i class="fa-solid fa-chart-line" aria-hidden="true"></i></span>
+        <h2 data-i18n="No scans yet">No scans yet</h2>
+        <p data-i18n="No scans yet. Scan your first message to see your personal activity here.">No scans yet. Scan your first message to see your personal activity here.</p>
+        <a class="button button-primary" href="{{ url_for('message_scanner') }}"><i class="fa-solid fa-message" aria-hidden="true"></i> <span data-i18n="Scan your first message">Scan your first message</span></a>
     </section>
 
-    <p class="estimate-note"><i class="fa-solid fa-circle-info"></i> Classifications are automated estimates and are not guarantees.</p>
+    <div class="dashboard-data" id="dashboard-data">
+        <section class="stats-grid" aria-label="Your scan summary" data-i18n-aria="Your scan summary">
+            <article class="stat-card">
+                <span class="stat-icon"><i class="fa-solid fa-message" aria-hidden="true"></i></span>
+                <div class="stat-copy">
+                    <span class="stat-label" data-i18n="Messages checked">Messages checked</span>
+                    <strong id="total-messages"><span class="dashboard-skeleton" aria-hidden="true"></span></strong>
+                    <span class="stat-change" id="messages-change" data-i18n="Loading comparison">Loading comparison</span>
+                </div>
+            </article>
+            <article class="stat-card">
+                <span class="stat-icon safe-tint"><i class="fa-solid fa-circle-check" aria-hidden="true"></i></span>
+                <div class="stat-copy">
+                    <span class="stat-label" data-i18n="Safe messages">Safe messages</span>
+                    <strong id="safe-count"><span class="dashboard-skeleton" aria-hidden="true"></span></strong>
+                    <span class="stat-change" id="safe-change" data-i18n="Loading comparison">Loading comparison</span>
+                </div>
+            </article>
+            <article class="stat-card">
+                <span class="stat-icon danger-tint"><i class="fa-solid fa-circle-xmark" aria-hidden="true"></i></span>
+                <div class="stat-copy">
+                    <span class="stat-label" data-i18n="Spam messages">Spam messages</span>
+                    <strong id="spam-count"><span class="dashboard-skeleton" aria-hidden="true"></span></strong>
+                    <span class="stat-change" id="spam-change" data-i18n="Loading comparison">Loading comparison</span>
+                </div>
+            </article>
+            <article class="stat-card">
+                <span class="stat-icon warning-tint"><i class="fa-solid fa-triangle-exclamation" aria-hidden="true"></i></span>
+                <div class="stat-copy">
+                    <span class="stat-label" data-i18n="Suspicious messages">Suspicious messages</span>
+                    <strong id="suspicious-count"><span class="dashboard-skeleton" aria-hidden="true"></span></strong>
+                    <span class="stat-change" id="suspicious-change" data-i18n="Loading comparison">Loading comparison</span>
+                </div>
+            </article>
+            <article class="stat-card url-stat-card">
+                <span class="stat-icon"><i class="fa-solid fa-link" aria-hidden="true"></i></span>
+                <div class="stat-copy">
+                    <span class="stat-label" data-i18n="URLs checked">URLs checked</span>
+                    <strong id="urls-analysed"><span class="dashboard-skeleton" aria-hidden="true"></span></strong>
+                    <span class="stat-change" id="urls-change" data-i18n="Loading comparison">Loading comparison</span>
+                    <dl class="url-risk-counts" aria-label="URL result counts" data-i18n-aria="URL result counts">
+                        <div><dt data-i18n="Safe">Safe</dt><dd id="url-safe-count">—</dd></div>
+                        <div><dt data-i18n="Suspicious">Suspicious</dt><dd id="url-suspicious-count">—</dd></div>
+                        <div><dt data-i18n="Spam">Spam</dt><dd id="url-spam-count">—</dd></div>
+                        <div><dt data-i18n="High risk">High risk</dt><dd id="url-high-risk-count">—</dd></div>
+                    </dl>
+                </div>
+            </article>
+        </section>
+
+        <section class="dashboard-charts" aria-label="Scan charts" data-i18n-aria="Scan charts">
+            <article class="panel dashboard-panel dashboard-line-panel">
+                <div class="panel-heading"><div><p class="eyebrow" data-i18n="ACTIVITY">ACTIVITY</p><h2 data-i18n="Scans per day">Scans per day</h2></div></div>
+                <div class="dashboard-chart-container"><canvas id="scans-per-day-chart" role="img" aria-label="Line chart showing scans per day" data-i18n-aria="Line chart showing scans per day"></canvas></div>
+                <p class="chart-accessible-summary" id="scans-per-day-summary" aria-live="polite"></p>
+            </article>
+            <article class="panel dashboard-panel">
+                <div class="panel-heading"><div><p class="eyebrow" data-i18n="MESSAGE RESULTS">MESSAGE RESULTS</p><h2 data-i18n="Safe, suspicious and spam">Safe, suspicious and spam</h2></div></div>
+                <div class="dashboard-chart-container"><canvas id="result-chart" role="img" aria-label="Doughnut chart of message classifications" data-i18n-aria="Doughnut chart of message classifications"></canvas></div>
+                <p class="chart-accessible-summary" id="result-chart-summary" aria-live="polite"></p>
+            </article>
+            <article class="panel dashboard-panel">
+                <div class="panel-heading"><div><p class="eyebrow" data-i18n="WHERE THEY CAME FROM">WHERE THEY CAME FROM</p><h2 data-i18n="Scans by source">Scans by source</h2></div></div>
+                <div class="dashboard-chart-container"><canvas id="source-chart" role="img" aria-label="Bar chart showing scan counts by source" data-i18n-aria="Bar chart showing scan counts by source"></canvas></div>
+                <p class="chart-accessible-summary" id="source-chart-summary" aria-live="polite"></p>
+            </article>
+            <article class="panel dashboard-panel">
+                <div class="panel-heading"><div><p class="eyebrow" data-i18n="PATTERNS TO REVIEW">PATTERNS TO REVIEW</p><h2 data-i18n="Scam categories">Scam categories</h2></div></div>
+                <div class="dashboard-chart-container category-chart-container"><canvas id="category-chart" role="img" aria-label="Horizontal bar chart of scam categories" data-i18n-aria="Horizontal bar chart of scam categories"></canvas></div>
+                <p class="chart-accessible-summary" id="category-chart-summary" aria-live="polite"></p>
+            </article>
+        </section>
+
+        <section class="dashboard-lower-grid">
+            <article class="panel dashboard-panel keyword-panel">
+                <div class="panel-heading"><div><p class="eyebrow" data-i18n="REPEATED SIGNALS">REPEATED SIGNALS</p><h2 data-i18n="Top suspicious keywords">Top suspicious keywords</h2></div></div>
+                <ol class="keyword-list" id="top-keywords" aria-live="polite" aria-label="Top suspicious keywords" data-i18n-aria="Top suspicious keywords">
+                    <li class="keyword-skeleton" aria-hidden="true"><span class="dashboard-skeleton"></span></li>
+                </ol>
+            </article>
+            <article class="panel dashboard-panel activity-panel">
+                <div class="panel-heading">
+                    <div><p class="eyebrow" data-i18n="RECENT ACTIVITY">RECENT ACTIVITY</p><h2 data-i18n="Latest scans">Latest scans</h2></div>
+                    <a class="text-link" href="{{ url_for('history_page') }}"><span data-i18n="View all history">View all history</span> <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+                </div>
+                <div class="table-scroll">
+                    <table class="activity-table">
+                        <thead><tr><th scope="col" data-i18n="Type">Type</th><th scope="col" data-i18n="Content">Content</th><th scope="col" data-i18n="Result">Result</th><th scope="col" data-i18n="Score">Score</th><th scope="col" data-i18n="Date">Date</th></tr></thead>
+                        <tbody id="recent-scans-body">
+                            <tr class="activity-skeleton-row" aria-hidden="true"><td colspan="5"><span class="dashboard-skeleton"></span></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </article>
+        </section>
+    </div>
+
+    <aside class="notice notice-info estimate-note"><i class="fa-solid fa-circle-info" aria-hidden="true"></i><p data-i18n="Classifications are estimates, not guarantees. Verify unexpected requests independently.">Classifications are estimates, not guarantees. Verify unexpected requests independently.</p></aside>
+
+    <dialog class="details-dialog" id="dashboard-details-modal" aria-labelledby="dashboard-details-title">
+        <div class="details-dialog-header">
+            <div><p class="eyebrow" data-i18n="SAVED CHECK">SAVED CHECK</p><h2 id="dashboard-details-title" data-i18n="Scan Details">Scan Details</h2></div>
+            <button class="icon-button" id="close-dashboard-details" type="button" aria-label="Close scan details" data-i18n-aria="Close scan details"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button>
+        </div>
+        <p class="inline-alert" id="dashboard-details-error" role="alert" hidden></p>
+        <div class="details-content" id="dashboard-details-content"></div>
+    </dialog>
 </main>
 {% endblock %}

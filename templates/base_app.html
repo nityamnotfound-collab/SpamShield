@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="light">
+    <meta name="description" content="Your personal SpamShield scanning workspace." data-i18n-content="Your personal SpamShield scanning workspace.">
+    <title data-i18n>{% block title %}SpamShield{% endblock %}</title>
+    <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='images/favicon.svg') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    {% block head_scripts %}{% endblock %}
+</head>
+<body class="app-body">
+    <a class="skip-link" href="#main-content" data-i18n="Skip to main content">Skip to main content</a>
+    <nav class="app-sidebar" id="site-nav" aria-label="Application navigation" data-i18n-aria="Application navigation">
+        <a class="brand app-brand" href="{{ url_for('dashboard') }}">
+            <span class="brand-mark" aria-hidden="true"><i class="fa-solid fa-shield-halved"></i></span>
+            <span class="brand-copy"><strong>SpamShield</strong><span data-i18n="Personal workspace">Personal workspace</span></span>
+        </a>
+        <span class="sidebar-label" data-i18n="WORKSPACE">WORKSPACE</span>
+        <a class="sidebar-link {% if request.endpoint == 'dashboard' %}is-active{% endif %}" href="{{ url_for('dashboard') }}">
+            <i class="fa-solid fa-table-columns" aria-hidden="true"></i><span data-i18n="Dashboard">Dashboard</span>
+        </a>
+        <a class="sidebar-link {% if request.endpoint == 'message_scanner' %}is-active{% endif %}" href="{{ url_for('message_scanner') }}">
+            <i class="fa-solid fa-message" aria-hidden="true"></i><span data-i18n="Message Scanner">Message Scanner</span>
+        </a>
+        <a class="sidebar-link {% if request.endpoint == 'url_scanner' %}is-active{% endif %}" href="{{ url_for('url_scanner') }}">
+            <i class="fa-solid fa-link" aria-hidden="true"></i><span data-i18n="URL Scanner">URL Scanner</span>
+        </a>
+        <a class="sidebar-link {% if request.endpoint == 'history_page' %}is-active{% endif %}" href="{{ url_for('history_page') }}">
+            <i class="fa-solid fa-clock-rotate-left" aria-hidden="true"></i><span data-i18n="Scan History">Scan History</span>
+        </a>
+        <span class="sidebar-label sidebar-label-secondary" data-i18n="LEARN">LEARN</span>
+        <a class="sidebar-link {% if request.endpoint == 'scam_awareness' %}is-active{% endif %}" href="{{ url_for('scam_awareness') }}">
+            <i class="fa-solid fa-shield-heart" aria-hidden="true"></i><span data-i18n="Scam Awareness">Scam Awareness</span>
+        </a>
+        <a class="sidebar-link" href="{{ url_for('about') }}">
+            <i class="fa-solid fa-circle-info" aria-hidden="true"></i><span data-i18n="About">About</span>
+        </a>
+        <div class="sidebar-bottom">
+            <a class="sidebar-link logout-link" href="{{ url_for('logout') }}">
+                <i class="fa-solid fa-arrow-right-from-bracket" aria-hidden="true"></i><span data-i18n="Logout">Logout</span>
+            </a>
+            <p data-i18n="SpamShield is a student project, not a government service.">SpamShield is a student project, not a government service.</p>
+        </div>
+    </nav>
+    <div class="app-scrim" data-close-sidebar hidden></div>
+
+    <div class="app-main">
+        <header class="app-topbar" id="site-header">
+            <button class="menu-toggle sidebar-toggle" id="menu-toggle" type="button" aria-label="Open navigation menu" data-i18n-aria="Open navigation menu" aria-controls="site-nav" aria-expanded="false">
+                <i class="fa-solid fa-bars" aria-hidden="true"></i>
+            </button>
+            <span class="topbar-title" data-i18n="Personal scanning workspace">Personal scanning workspace</span>
+            <p class="welcome-message" data-i18n="Welcome, {name}" data-i18n-name="{{ session.get('user_name', 'User') }}"></p>
+            <div class="language-switch app-language-switch" role="group" aria-label="Language" data-i18n-aria="Language">
+                <button type="button" data-language-choice="en">English</button>
+                <span aria-hidden="true">|</span>
+                <button type="button" data-language-choice="hi">हिन्दी</button>
+            </div>
+        </header>
+        <div class="app-content">
+            <div class="app-breadcrumb-shell section-shell">
+                {% block breadcrumbs %}{% endblock %}
+            </div>
+            <div id="main-content">
+                {% block content %}{% endblock %}
+            </div>
+        </div>
+        <footer class="app-footer" id="site-footer">
+            <span data-i18n="SpamShield is a student project and is not an official government service.">SpamShield is a student project and is not an official government service.</span>
+            <span><span data-i18n="Report cyber fraud: call">Report cyber fraud: call</span> <a href="tel:1930">1930</a> <span data-i18n="or visit">or visit</span> <a href="https://cybercrime.gov.in" rel="noopener noreferrer" target="_blank">cybercrime.gov.in</a>.</span>
+        </footer>
+    </div>
+    <script src="{{ url_for('static', filename='js/i18n.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>

@@ -2,7 +2,7 @@
 
 import argparse
 
-from utils.database import clear_history, init_db, save_scan
+from utils.database import clear_history, get_user_by_email, init_db, save_scan
 from utils.message_detector import analyze_message
 from utils.url_detector import analyze_url
 
@@ -72,18 +72,19 @@ DEMO_URLS = [
 ]
 
 
-def seed_demo_data(clear_first=False):
+def seed_demo_data(user_id, clear_first=False):
     """Analyze and save the fixed demo examples without visiting any URLs."""
     init_db()
 
     if clear_first:
-        clear_history()
+        clear_history(user_id)
 
     saved_count = 0
 
     for message, source in DEMO_MESSAGES:
         result = analyze_message(message)
         save_scan(
+            user_id,
             "message",
             message,
             source,
@@ -97,6 +98,7 @@ def seed_demo_data(clear_first=False):
     for url in DEMO_URLS:
         result = analyze_url(url)
         save_scan(
+            user_id,
             "url",
             url,
             "manual",
@@ -115,13 +117,22 @@ def main():
         description="Analyze and save example messages and URLs for SpamShield."
     )
     argument_parser.add_argument(
+        "--email",
+        required=True,
+        help="Email address of the account that will own the demo scans.",
+    )
+    argument_parser.add_argument(
         "--clear",
         action="store_true",
         help="Clear all existing scan history before adding the demo scans.",
     )
     arguments = argument_parser.parse_args()
 
-    saved_count = seed_demo_data(clear_first=arguments.clear)
+    init_db()
+    user = get_user_by_email(arguments.email.strip().lower())
+    if user is None:
+        argument_parser.error("No account exists for that email address.")
+    saved_count = seed_demo_data(user["id"], clear_first=arguments.clear)
     print("Saved {} demo scans.".format(saved_count))
 
 

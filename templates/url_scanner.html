@@ -1,58 +1,30 @@
 {# Stable IDs: page-title, url-form, url-text, url-char-count, check-url-button, url-spinner, url-error, url-result, url-classification, url-risk-score, url-risk-bar, url-reasons, url-recommendation, url-note #}
-{% extends "base.html" %}
-{% block title %}URL Scanner | SpamShield{% endblock %}
+{% extends "base_app.html" %}
+{% block title %}Link Check | SpamShield{% endblock %}
+{% block breadcrumbs %}
+<nav class="breadcrumbs" aria-label="Breadcrumb" data-i18n-aria="Breadcrumb"><a href="{{ url_for('dashboard') }}" data-i18n="Workspace">Workspace</a><i class="fa-solid fa-chevron-right" aria-hidden="true"></i><span aria-current="page" data-i18n="Link Check">Link Check</span></nav>
+{% endblock %}
 {% block content %}
-<main class="section-shell scanner-page">
+<main class="section-shell app-page scanner-page">
     <header class="page-heading scanner-heading">
-        <div>
-            <p class="eyebrow">LOCAL URL PATTERN CHECK</p>
-            <h1 id="page-title">URL Scanner</h1>
-            <p>Review URL text for suspicious patterns without opening or visiting it.</p>
-        </div>
-        <span class="privacy-note"><i class="fa-solid fa-link-slash"></i> The URL is never visited.</span>
+        <div><p class="eyebrow" data-i18n="LINK CHECK">LINK CHECK</p><h1 id="page-title" data-i18n="Review a link">Review a link</h1><p data-i18n="Inspect URL text for suspicious patterns without opening or visiting it.">Inspect URL text for suspicious patterns without opening or visiting it.</p></div>
+        <span class="privacy-note"><i class="fa-solid fa-link-slash" aria-hidden="true"></i> <span data-i18n="The link is never visited.">The link is never visited.</span></span>
     </header>
-
     <section class="panel scanner-panel">
         <form id="url-form">
-            <label class="field-label" for="url-text">URL to check</label>
-            <input id="url-text" name="url" type="text" maxlength="2000" autocomplete="off" placeholder="Paste or type a URL" required>
-            <div class="field-meta"><span>Maximum 2,000 characters</span><span id="url-char-count">0 / 2000</span></div>
-            <button class="button button-primary analyze-button" id="check-url-button" type="submit">
-                <i class="fa-solid fa-magnifying-glass"></i> Check URL
-            </button>
-            <span class="loading-indicator" id="url-spinner" role="status" hidden>
-                <i class="fa-solid fa-spinner fa-spin"></i> Checking URL text...
-            </span>
+            <label class="field-label" for="url-text" data-i18n="Link to check">Link to check</label>
+            <input id="url-text" name="url" type="text" maxlength="2000" autocomplete="off" placeholder="Paste or type a link" data-i18n-placeholder="Paste or type a link" required>
+            <div class="field-meta"><span data-i18n="Maximum 2,000 characters">Maximum 2,000 characters</span><span id="url-char-count">0 / 2000</span></div>
+            <button class="button button-primary analyze-button" id="check-url-button" type="submit"><i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i> <span data-i18n="Check link">Check link</span></button>
+            <span class="loading-indicator" id="url-spinner" role="status" hidden><i class="fa-solid fa-spinner fa-spin" aria-hidden="true"></i> <span data-i18n="Checking link text...">Checking link text...</span></span>
         </form>
-
-        <p class="error-box" id="url-error" role="alert" hidden></p>
-
+        <p class="error-box inline-alert" id="url-error" role="alert" hidden></p>
         <section class="result-card" id="url-result" aria-live="polite" hidden>
-            <div class="result-header">
-                <div>
-                    <p class="eyebrow">PATTERN-BASED ESTIMATE</p>
-                    <h2>URL assessment</h2>
-                </div>
-                <span class="classification-badge" id="url-classification"></span>
-            </div>
-
-            <div class="metric-block">
-                <div class="metric-heading"><span>Risk score</span><strong id="url-risk-score"></strong></div>
-                <div class="progress-track" role="progressbar" aria-label="URL risk score" aria-valuemin="0" aria-valuemax="100">
-                    <span class="progress-fill" id="url-risk-bar"></span>
-                </div>
-            </div>
-
-            <div class="result-section">
-                <h3><i class="fa-solid fa-flag"></i> Reasons</h3>
-                <ul id="url-reasons" class="result-list"></ul>
-            </div>
-
-            <div class="recommendation-box">
-                <h3><i class="fa-solid fa-shield"></i> Safety recommendation</h3>
-                <p id="url-recommendation"></p>
-            </div>
-            <p class="disclaimer" id="url-note">This is a pattern-based check, not a threat-database lookup. The URL is not opened or visited.</p>
+            <div class="result-header"><div><p class="eyebrow" data-i18n="PATTERN-BASED ESTIMATE">PATTERN-BASED ESTIMATE</p><h2 data-i18n="Link assessment">Link assessment</h2></div><span class="classification-badge" id="url-classification"></span></div>
+            <div class="metric-block"><div class="metric-heading"><span data-i18n="Risk score">Risk score</span><strong id="url-risk-score"></strong></div><div class="progress-track" role="progressbar" aria-label="Link risk score" data-i18n-aria="Link risk score" aria-valuemin="0" aria-valuemax="100"><span class="progress-fill" id="url-risk-bar"></span></div></div>
+            <div class="result-section"><h3><i class="fa-solid fa-flag" aria-hidden="true"></i> <span data-i18n="Patterns noticed">Patterns noticed</span></h3><ul id="url-reasons" class="result-list"></ul></div>
+            <div class="recommendation-box"><h3><i class="fa-solid fa-shield-halved" aria-hidden="true"></i> <span data-i18n="Suggested next step">Suggested next step</span></h3><p id="url-recommendation"></p></div>
+            <p class="disclaimer" id="url-note" data-i18n="This is a pattern-based check, not a threat-database lookup. The link is not opened or visited.">This is a pattern-based check, not a threat-database lookup. The link is not opened or visited.</p>
         </section>
     </section>
 </main>

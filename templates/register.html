@@ -1,0 +1,63 @@
+{% extends "base_public.html" %}
+{% block title %}Create an account | SpamShield{% endblock %}
+{% block breadcrumbs %}
+<nav class="breadcrumbs" aria-label="Breadcrumb" data-i18n-aria="Breadcrumb"><a href="{{ url_for('home') }}" data-i18n="Home">Home</a><i class="fa-solid fa-chevron-right" aria-hidden="true"></i><span aria-current="page" data-i18n="Register">Register</span></nav>
+{% endblock %}
+{% block content %}
+<main class="auth-page">
+    <section class="panel auth-card register-card">
+        <div class="auth-heading">
+            <span class="auth-icon" aria-hidden="true"><i class="fa-solid fa-user-plus"></i></span>
+            <p class="eyebrow" data-i18n="CREATE A PERSONAL WORKSPACE">CREATE A PERSONAL WORKSPACE</p>
+            <h1 data-i18n="Create your account">Create your account</h1>
+            <p data-i18n="Your saved scans are visible only to your account.">Your saved scans are visible only to your account.</p>
+        </div>
+        <form class="auth-form" id="register-form" method="post" action="{{ url_for('register') }}" novalidate>
+            <div class="form-field">
+                <label for="register-name" data-i18n="Full name">Full name</label>
+                <input id="register-name" name="name" type="text" minlength="2" maxlength="50" autocomplete="name" value="{{ name or '' }}" required>
+                <span class="field-error" id="register-name-error" hidden></span>
+            </div>
+            <div class="form-field">
+                <label for="register-email" data-i18n="Email">Email</label>
+                <input id="register-email" name="email" type="email" autocomplete="email" value="{{ email or '' }}" required>
+                <span class="field-error" id="register-email-error" hidden></span>
+            </div>
+            <div class="form-field">
+                <label for="register-password" data-i18n="Password">Password</label>
+                <div class="password-control">
+                    <input id="register-password" name="password" type="password" autocomplete="new-password" required aria-describedby="password-strength-label password-requirements">
+                    <button class="password-toggle" id="toggle-register-password" type="button" data-password-toggle="register-password" aria-label="Show password" data-i18n-aria="Show password" aria-pressed="false" data-i18n="Show">Show</button>
+                </div>
+                <div class="strength-heading"><span id="password-strength-label" data-i18n="Password strength">Password strength</span><strong id="password-strength" aria-live="polite" data-i18n-dynamic>{{ password_strength }}</strong></div>
+                <div class="strength-track" id="password-strength-meter" data-strength="{{ password_strength }}" role="progressbar" aria-label="Password strength" data-i18n-aria="Password strength" aria-valuemin="0" aria-valuemax="4" aria-valuenow="0">
+                    <span class="strength-fill" id="password-strength-bar"></span>
+                </div>
+                <ul class="password-requirements" id="password-requirements" aria-label="Password requirements" data-i18n-aria="Password requirements">
+                    <li data-password-rule="length"><i class="fa-regular fa-circle" aria-hidden="true"></i><span data-i18n="8 or more characters">8 or more characters</span></li>
+                    <li data-password-rule="uppercase"><i class="fa-regular fa-circle" aria-hidden="true"></i><span data-i18n="At least one uppercase letter">At least one uppercase letter</span></li>
+                    <li data-password-rule="lowercase"><i class="fa-regular fa-circle" aria-hidden="true"></i><span data-i18n="At least one lowercase letter">At least one lowercase letter</span></li>
+                    <li data-password-rule="number"><i class="fa-regular fa-circle" aria-hidden="true"></i><span data-i18n="At least one number">At least one number</span></li>
+                    <li data-password-rule="special"><i class="fa-regular fa-circle" aria-hidden="true"></i><span data-i18n="At least one special character">At least one special character</span></li>
+                </ul>
+                <p class="field-hint" data-i18n="Avoid common passwords and do not include your email name.">Avoid common passwords and do not include your email name.</p>
+                <span class="field-error" id="register-password-error" hidden></span>
+            </div>
+            <div class="form-field">
+                <label for="register-confirm-password" data-i18n="Confirm password">Confirm password</label>
+                <div class="password-control">
+                    <input id="register-confirm-password" name="confirm_password" type="password" autocomplete="new-password" required>
+                    <button class="password-toggle" id="toggle-confirm-password" type="button" data-password-toggle="register-confirm-password" aria-label="Show password" data-i18n-aria="Show password" aria-pressed="false" data-i18n="Show">Show</button>
+                </div>
+                <span class="field-error" id="confirm-password-error" hidden></span>
+            </div>
+            <p class="auth-error" id="auth-error" role="alert" data-i18n-dynamic {% if not error %}hidden{% endif %}>{{ error or '' }}</p>
+            <button class="button button-primary auth-submit" id="register-submit" type="submit" disabled>
+                <span class="button-label" data-i18n="Create account">Create account</span>
+                <span class="button-loading" id="register-spinner" role="status" hidden><i class="fa-solid fa-spinner fa-spin" aria-hidden="true"></i> <span data-i18n="Creating account...">Creating account...</span></span>
+            </button>
+        </form>
+        <p class="auth-switch"><span data-i18n="Already registered?">Already registered?</span> <a href="{{ url_for('login') }}" data-i18n="Log in">Log in</a>.</p>
+    </section>
+</main>
+{% endblock %}

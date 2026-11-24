@@ -56,10 +56,11 @@ def is_ip_address(hostname):
         return False
 
 
-def analyze_url(url):
+def analyze_url(url, lang="en"):
     """Analyze URL text locally using urllib.parse and regular expressions."""
     if not isinstance(url, str) or not url.strip():
         raise ValueError("URL text must not be empty.")
+    lang = lang if lang in ("en", "hi") else "en"
 
     original_url = url.strip()
     url_for_parsing = original_url
@@ -73,54 +74,78 @@ def analyze_url(url):
         raise ValueError("URL text could not be parsed.") from error
     scheme = parsed_url.scheme.lower()
     risk_score = 0
-    reasons = []
+    reason_localizations = []
+
+    def add_reason(english, hindi):
+        reason_localizations.append({"en": english, "hi": hindi})
 
     # URL length is a weak signal, so it receives only a small point value.
     if len(original_url) > URL_LENGTH_LONG:
         risk_score += URL_LENGTH_POINTS
-        reasons.append(
+        add_reason(
             "The URL is unusually long, with more than "
             + str(URL_LENGTH_LONG)
-            + " characters."
+            + " characters.",
+            str(URL_LENGTH_LONG)
+            + " अक्षरों से अधिक होने के कारण URL असामान्य रूप से लंबा है।",
         )
 
     if is_ip_address(hostname):
         risk_score += IP_ADDRESS_POINTS
-        reasons.append("The URL uses an IP address instead of a domain name.")
+        add_reason(
+            "The URL uses an IP address instead of a domain name.",
+            "URL में डोमेन नाम के बजाय IP पता है।",
+        )
 
     if "@" in original_url:
         risk_score += SPECIAL_AT_POINTS
-        reasons.append("The URL contains an @ character that may obscure its destination.")
+        add_reason(
+            "The URL contains an @ character that may obscure its destination.",
+            "URL में @ चिह्न है, जो उसके गंतव्य को छिपा सकता है।",
+        )
 
     # Count // after the scheme as a special-character pattern in the rest of the URL.
     after_scheme = original_url.split("://", 1)[1] if "://" in original_url else original_url
     if "//" in after_scheme:
         risk_score += SPECIAL_DOUBLE_SLASH_POINTS
-        reasons.append("The URL contains repeated forward slashes.")
+        add_reason(
+            "The URL contains repeated forward slashes.",
+            "URL में लगातार कई स्लैश हैं।",
+        )
 
     if original_url.count("-") >= 3:
         risk_score += SPECIAL_HYPHEN_POINTS
-        reasons.append("The URL contains many hyphens.")
+        add_reason("The URL contains many hyphens.", "URL में कई हाइफ़न हैं।")
 
     if re.search(r"%[0-9a-fA-F]{2}", original_url):
         risk_score += SPECIAL_ENCODED_POINTS
-        reasons.append("The URL contains encoded percent characters.")
+        add_reason(
+            "The URL contains encoded percent characters.",
+            "URL में प्रतिशत चिह्न के एन्कोड किए गए वर्ण हैं।",
+        )
 
     if hostname:
         subdomain_count = len([part for part in hostname.split(".") if part]) - 2
         if subdomain_count > 2:
             risk_score += SUBDOMAIN_POINTS
-            reasons.append(
-                "The domain has many subdomains, which can be used to make a URL look unfamiliar."
+            add_reason(
+                "The domain has many subdomains, which can be used to make a URL look unfamiliar.",
+                "डोमेन में कई सबडोमेन हैं, जिससे URL अपरिचित दिख सकता है।",
             )
 
     if hostname in SHORTENER_DOMAINS:
         risk_score += SHORTENER_POINTS
-        reasons.append("The URL uses a known URL-shortening domain.")
+        add_reason(
+            "The URL uses a known URL-shortening domain.",
+            "URL में एक ज्ञात लिंक छोटा करने वाली सेवा का उपयोग है।",
+        )
 
     if scheme == "http":
         risk_score += HTTP_POINTS
-        reasons.append("The URL uses HTTP instead of HTTPS.")
+        add_reason(
+            "The URL uses HTTP instead of HTTPS.",
+            "URL में HTTPS के बजाय HTTP का उपयोग है।",
+        )
 
     lower_url = original_url.lower()
     found_keywords = []
@@ -130,37 +155,64 @@ def analyze_url(url):
 
     if found_keywords:
         risk_score += SUSPICIOUS_KEYWORD_POINTS
-        reasons.append(
+        keyword_list = ", ".join(found_keywords)
+        add_reason(
             "Suspicious keyword(s) found: "
-            + ", ".join(found_keywords)
-            + "."
+            + keyword_list
+            + ".",
+            "संदिग्ध कीवर्ड मिले: " + keyword_list + "।",
         )
 
     if risk_score >= SUSPICIOUS_RISK_LIMIT:
         classification = "HIGH RISK"
-        recommendation = (
-            "Do not open or share this URL. Verify the sender and destination "
-            "through an official known channel."
-        )
+        recommendation = {
+            "en": "Do not open or share this URL. Verify the sender and destination "
+            "through an official known channel.",
+            "hi": "इस URL को न खोलें और न साझा करें। भेजने वाले और गंतव्य की पुष्टि "
+            "किसी आधिकारिक व ज्ञात माध्यम से करें।",
+        }
     elif risk_score >= SAFE_RISK_LIMIT:
         classification = "SUSPICIOUS"
-        recommendation = (
-            "Exercise caution. Check the destination through an official known "
-            "channel before opening it."
-        )
+        recommendation = {
+            "en": "Exercise caution. Check the destination through an official known "
+            "channel before opening it.",
+            "hi": "सावधानी बरतें। खोलने से पहले आधिकारिक और ज्ञात माध्यम से "
+            "गंतव्य की जाँच करें।",
+        }
     else:
         classification = "SAFE"
-        recommendation = (
-            "No strong URL patterns were detected, but verify unfamiliar sources independently."
+        recommendation = {
+            "en": "No strong URL patterns were detected, but verify unfamiliar sources independently.",
+            "hi": "URL में कोई स्पष्ट चेतावनी संकेत नहीं मिला, फिर भी अपरिचित स्रोतों "
+            "की अलग से पुष्टि करें।",
+        }
+
+    if not reason_localizations:
+        add_reason(
+            "No suspicious URL pattern checks were triggered.",
+            "URL में कोई संदिग्ध पैटर्न नहीं मिला।",
         )
 
-    if not reasons:
-        reasons.append("No suspicious URL pattern checks were triggered.")
+    localizations = {
+        language: {
+            "reasons": [reason[language] for reason in reason_localizations],
+            "recommendation": recommendation[language],
+            "note": (
+                "This is a pattern-based check, not a threat-intelligence lookup."
+                if language == "en"
+                else "यह पैटर्न पर आधारित जाँच है, खतरे की जानकारी वाले डेटाबेस से "
+                "मिलान नहीं।"
+            ),
+        }
+        for language in ("en", "hi")
+    }
 
     return {
         "classification": classification,
         "risk_score": min(risk_score, 100),
-        "reasons": reasons,
-        "recommendation": recommendation,
-        "note": "This is a pattern-based check, not a threat-intelligence lookup.",
+        "suspicious_keywords": found_keywords,
+        "reasons": localizations[lang]["reasons"],
+        "recommendation": localizations[lang]["recommendation"],
+        "note": localizations[lang]["note"],
+        "localizations": localizations,
     }

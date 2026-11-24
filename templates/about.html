@@ -1,63 +1,36 @@
-{# Stable IDs: about-page, page-title, what-is-spamshield, why-detection, how-model-works, system-limits, safety-tips #}
-{% extends "base.html" %}
+{% extends "base_public.html" %}
 {% block title %}About | SpamShield{% endblock %}
+{% block breadcrumbs %}
+<nav class="breadcrumbs" aria-label="Breadcrumb" data-i18n-aria="Breadcrumb"><a href="{{ url_for('home') }}" data-i18n="Home">Home</a><i class="fa-solid fa-chevron-right" aria-hidden="true"></i><span aria-current="page" data-i18n="About">About</span></nav>
+{% endblock %}
 {% block content %}
-<main class="section-shell about-page" id="about-page">
-    <header class="about-hero">
-        <p class="eyebrow">ABOUT THIS PROJECT</p>
-        <h1 id="page-title">A clearer way to pause and check</h1>
-        <p>SpamShield is an academic tool that helps people review suspicious messages and URLs before taking action.</p>
+<main class="section-shell inner-page about-page" id="about-page">
+    <header class="page-intro">
+        <p class="eyebrow" data-i18n="ABOUT THIS PROJECT">ABOUT THIS PROJECT</p>
+        <h1 id="page-title" data-i18n="A moment to pause and check">A moment to pause and check</h1>
+        <p data-i18n="SpamShield is a student project that helps people review suspicious messages and links before deciding what to do next.">SpamShield is a student project that helps people review suspicious messages and links before deciding what to do next.</p>
     </header>
-
-    <div class="about-content">
-        <section class="about-section" id="what-is-spamshield">
-            <span class="about-icon"><i class="fa-solid fa-shield-halved"></i></span>
-            <div>
-                <h2>What SpamShield does</h2>
-                <p>You manually paste a message or URL, and SpamShield returns an automated estimate with patterns that may deserve attention. It does not access inboxes. Submitted URLs are analyzed as text and are never opened.</p>
-            </div>
+    <div class="information-grid">
+        <section class="information-card" id="what-is-spamshield">
+            <span class="information-icon" aria-hidden="true"><i class="fa-solid fa-shield-halved"></i></span>
+            <div><h2 data-i18n="What SpamShield does">What SpamShield does</h2><p data-i18n="It analyses text you choose to submit and returns an automated estimate with patterns that may deserve attention. It does not access inboxes, verify senders, or open links.">It analyses text you choose to submit and returns an automated estimate with patterns that may deserve attention. It does not access inboxes, verify senders, or open links.</p></div>
         </section>
-
-        <section class="about-section" id="why-detection">
-            <span class="about-icon"><i class="fa-solid fa-triangle-exclamation"></i></span>
-            <div>
-                <h2>Why spam detection matters</h2>
-                <p>Scam messages can pressure people to reveal passwords, OTPs, payment details, or personal information. A second look at unexpected urgency, rewards, account warnings, and links can help people pause and verify a request independently.</p>
-            </div>
+        <section class="information-card" id="why-detection">
+            <span class="information-icon warning-icon" aria-hidden="true"><i class="fa-solid fa-triangle-exclamation"></i></span>
+            <div><h2 data-i18n="Why a second look helps">Why a second look helps</h2><p data-i18n="Unexpected urgency, account warnings, prizes, and requests for money or private details can pressure people into acting quickly. Pause and verify requests independently.">Unexpected urgency, account warnings, prizes, and requests for money or private details can pressure people into acting quickly. Pause and verify requests independently.</p></div>
         </section>
-
-        <section class="about-section" id="how-model-works">
-            <span class="about-icon"><i class="fa-solid fa-brain"></i></span>
-            <div>
-                <h2>How the model works</h2>
-                <p><strong>TF-IDF</strong> turns words and short word combinations into numbers. It gives more weight to terms that are useful for distinguishing messages and less weight to terms that appear everywhere.</p>
-                <p><strong>Multinomial Naive Bayes</strong> learns which word patterns tend to appear in spam or legitimate examples. For a new message, it estimates how likely the message is to belong to each class based on the patterns it learned.</p>
-                <p>In short: TF-IDF represents the text as useful numbers, and Naive Bayes uses those numbers to estimate a class.</p>
-            </div>
+        <section class="information-card" id="how-model-works">
+            <span class="information-icon" aria-hidden="true"><i class="fa-solid fa-brain"></i></span>
+            <div><h2 data-i18n="How message checks work">How message checks work</h2><p data-i18n="A text classifier looks for word patterns learned from examples. Separate rule-based checks can highlight common warning signs. Link checks use local patterns in the URL text only.">A text classifier looks for word patterns learned from examples. Separate rule-based checks can highlight common warning signs. Link checks use local patterns in the URL text only.</p></div>
         </section>
-
-        <section class="about-section" id="system-limits">
-            <span class="about-icon"><i class="fa-solid fa-circle-info"></i></span>
-            <div>
-                <h2>Limits of the system</h2>
-                <p>SpamShield can make mistakes. Language changes, examples may not represent every scam, and a safe-looking message may still be harmful. A classification is an estimate, not proof that a message is safe or malicious. SpamShield does not verify senders or check URLs against a threat-intelligence database.</p>
-            </div>
+        <section class="information-card" id="system-limits">
+            <span class="information-icon danger-icon" aria-hidden="true"><i class="fa-solid fa-circle-info"></i></span>
+            <div><h2 data-i18n="Important limitations">Important limitations</h2><p data-i18n="SpamShield can make mistakes. A safe-looking result is not proof that a message is genuine, and a warning is not proof of fraud. The service does not check links against an external threat database.">SpamShield can make mistakes. A safe-looking result is not proof that a message is genuine, and a warning is not proof of fraud. The service does not check links against an external threat database.</p></div>
         </section>
-
-        <section class="about-section" id="safety-tips">
-            <span class="about-icon"><i class="fa-solid fa-user-shield"></i></span>
-            <div>
-                <h2>Tips for protecting yourself</h2>
-                <ul>
-                    <li>Do not share OTPs, passwords, UPI PINs, or card security codes.</li>
-                    <li>Be cautious of unexpected urgency, prizes, refunds, or job offers that require a fee.</li>
-                    <li>Do not use contact details or links supplied by a suspicious message; independently find the official channel.</li>
-                    <li>Check a URL's spelling and destination carefully before deciding whether to open it.</li>
-                    <li>If a message claims to be from a bank or delivery service, verify it through its official app or known customer-support contact.</li>
-                </ul>
-            </div>
+        <section class="information-card" id="safety-tips">
+            <span class="information-icon safe-icon" aria-hidden="true"><i class="fa-solid fa-user-shield"></i></span>
+            <div><h2 data-i18n="Protect your information">Protect your information</h2><ul><li data-i18n="Never share OTPs, passwords, UPI PINs, or card security codes.">Never share OTPs, passwords, UPI PINs, or card security codes.</li><li data-i18n="Contact an organization through its official app, website, or a known phone number.">Contact an organization through its official app, website, or a known phone number.</li><li data-i18n="Do not pay a fee to claim an unexpected prize or job.">Do not pay a fee to claim an unexpected prize or job.</li></ul></div>
         </section>
     </div>
-    <p class="about-disclaimer">Use SpamShield as an awareness aid, and independently verify suspicious messages.</p>
 </main>
 {% endblock %}

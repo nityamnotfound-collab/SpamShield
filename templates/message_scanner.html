@@ -1,106 +1,45 @@
 {# Stable IDs: page-title, message-form, message-text, message-char-count, message-source, sample-buttons, analyze-message-button, message-spinner, message-error, message-result, message-classification, message-confidence-value, message-confidence-bar, message-risk-level, message-explanations, message-keywords, supplementary-checks, supplementary-checks-list, recommended-action, copy-message-result, download-message-report, message-action-feedback #}
-{% extends "base.html" %}
-{% block title %}Message Scanner | SpamShield{% endblock %}
+{% extends "base_app.html" %}
+{% block title %}Message Check | SpamShield{% endblock %}
+{% block breadcrumbs %}
+<nav class="breadcrumbs" aria-label="Breadcrumb" data-i18n-aria="Breadcrumb"><a href="{{ url_for('dashboard') }}" data-i18n="Workspace">Workspace</a><i class="fa-solid fa-chevron-right" aria-hidden="true"></i><span aria-current="page" data-i18n="Message Check">Message Check</span></nav>
+{% endblock %}
 {% block content %}
-<main class="section-shell scanner-page">
+<main class="section-shell app-page scanner-page">
     <header class="page-heading scanner-heading">
-        <div>
-            <p class="eyebrow">MESSAGE ANALYSIS</p>
-            <h1 id="page-title">Message Scanner</h1>
-            <p>Paste a message to review its language and warning patterns.</p>
-        </div>
-        <span class="privacy-note"><i class="fa-solid fa-lock"></i> Your inbox is never accessed.</span>
+        <div><p class="eyebrow" data-i18n="MESSAGE CHECK">MESSAGE CHECK</p><h1 id="page-title" data-i18n="Review a message">Review a message</h1><p data-i18n="Paste a message to see an estimate and the patterns that influenced it.">Paste a message to see an estimate and the patterns that influenced it.</p></div>
+        <span class="privacy-note"><i class="fa-solid fa-lock" aria-hidden="true"></i> <span data-i18n="Your inbox is never accessed.">Your inbox is never accessed.</span></span>
     </header>
-
     <section class="panel scanner-panel">
         <form id="message-form">
-            <label class="field-label" for="message-text">Message text</label>
-            <textarea id="message-text" name="message" maxlength="5000" rows="8" placeholder="Paste the message you want to review..." required></textarea>
-            <div class="field-meta">
-                <span>Maximum 5,000 characters</span>
-                <span id="message-char-count">0 / 5000</span>
-            </div>
-
-            <label class="field-label" for="message-source">Where did you receive it?</label>
-            <select id="message-source" name="source">
-                <option>SMS</option>
-                <option>WhatsApp</option>
-                <option>Email</option>
-                <option>Telegram</option>
-                <option>Instagram</option>
-                <option>Other</option>
-            </select>
-
-            <div class="sample-section">
-                <p class="field-label">Try a sample message</p>
-                <div class="sample-buttons" id="sample-buttons">
-                    <button class="sample-button" type="button" data-sample="safe">Safe example</button>
-                    <button class="sample-button" type="button" data-sample="lottery">Lottery scam</button>
-                    <button class="sample-button" type="button" data-sample="banking">Banking / KYC phishing</button>
-                    <button class="sample-button" type="button" data-sample="otp">OTP scam</button>
-                    <button class="sample-button" type="button" data-sample="job">Fake job offer</button>
-                </div>
-            </div>
-
-            <button class="button button-primary analyze-button" id="analyze-message-button" type="submit">
-                <i class="fa-solid fa-magnifying-glass"></i> Analyse Message
-            </button>
-            <span class="loading-indicator" id="message-spinner" role="status" hidden>
-                <i class="fa-solid fa-spinner fa-spin"></i> Analysing message...
-            </span>
+            <label class="field-label" for="message-text" data-i18n="Message text">Message text</label>
+            <textarea id="message-text" name="message" maxlength="5000" rows="8" placeholder="Paste the message you want to review..." data-i18n-placeholder="Paste the message you want to review..." required></textarea>
+            <div class="field-meta"><span data-i18n="Maximum 5,000 characters">Maximum 5,000 characters</span><span id="message-char-count">0 / 5000</span></div>
+            <label class="field-label" for="message-source" data-i18n="Where did you receive it?">Where did you receive it?</label>
+            <select id="message-source" name="source"><option data-i18n="SMS">SMS</option><option data-i18n="WhatsApp">WhatsApp</option><option data-i18n="Email">Email</option><option data-i18n="Telegram">Telegram</option><option data-i18n="Instagram">Instagram</option><option data-i18n="Other">Other</option></select>
+            <div class="sample-section"><p class="field-label" data-i18n="Try a sample">Try a sample</p><div class="sample-buttons" id="sample-buttons">
+                <button class="sample-button" type="button" data-sample="safe" data-i18n="Everyday message">Everyday message</button>
+                <button class="sample-button" type="button" data-sample="lottery" data-i18n="Prize claim">Prize claim</button>
+                <button class="sample-button" type="button" data-sample="banking" data-i18n="Banking request">Banking request</button>
+                <button class="sample-button" type="button" data-sample="otp" data-i18n="OTP request">OTP request</button>
+                <button class="sample-button" type="button" data-sample="job" data-i18n="Job offer">Job offer</button>
+            </div></div>
+            <button class="button button-primary analyze-button" id="analyze-message-button" type="submit"><i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i> <span data-i18n="Check message">Check message</span></button>
+            <span class="loading-indicator" id="message-spinner" role="status" hidden><i class="fa-solid fa-spinner fa-spin" aria-hidden="true"></i> <span data-i18n="Checking message...">Checking message...</span></span>
         </form>
-
-        <p class="error-box" id="message-error" role="alert" hidden></p>
-
+        <p class="error-box inline-alert" id="message-error" role="alert" hidden></p>
         <section class="result-card" id="message-result" aria-live="polite" hidden>
-            <div class="result-header">
-                <div>
-                    <p class="eyebrow">ESTIMATED RESULT</p>
-                    <h2>Message assessment</h2>
-                </div>
-                <span class="classification-badge" id="message-classification"></span>
-            </div>
-
+            <div class="result-header"><div><p class="eyebrow" data-i18n="ESTIMATED RESULT">ESTIMATED RESULT</p><h2 data-i18n="Message assessment">Message assessment</h2></div><span class="classification-badge" id="message-classification"></span></div>
             <div class="result-metrics">
-                <div class="metric-block">
-                    <div class="metric-heading"><span>Spam probability</span><strong id="message-confidence-value"></strong></div>
-                    <div class="progress-track" role="progressbar" aria-label="Spam probability" aria-valuemin="0" aria-valuemax="100">
-                        <span class="progress-fill" id="message-confidence-bar"></span>
-                    </div>
-                </div>
-                <div class="risk-level-block">
-                    <span class="metric-heading">Risk level</span>
-                    <strong id="message-risk-level"></strong>
-                </div>
+                <div class="metric-block"><div class="metric-heading"><span data-i18n="Spam probability">Spam probability</span><strong id="message-confidence-value"></strong></div><div class="progress-track" role="progressbar" aria-label="Spam probability" data-i18n-aria="Spam probability" aria-valuemin="0" aria-valuemax="100"><span class="progress-fill" id="message-confidence-bar"></span></div></div>
+                <div class="risk-level-block"><span class="metric-heading" data-i18n="Risk level">Risk level</span><strong id="message-risk-level"></strong></div>
             </div>
-
-            <div class="result-section">
-                <h3><i class="fa-solid fa-circle-info"></i> Explanation</h3>
-                <ul id="message-explanations" class="result-list"></ul>
-            </div>
-
-            <div class="result-section">
-                <h3><i class="fa-solid fa-magnifying-glass"></i> Suspicious keywords</h3>
-                <ul id="message-keywords" class="tag-list"></ul>
-            </div>
-
-            <div class="result-section supplementary-section" id="supplementary-checks">
-                <h3><i class="fa-solid fa-list-check"></i> Supplementary security checks</h3>
-                <p>These rule-based checks are separate from the machine-learning prediction.</p>
-                <ul id="supplementary-checks-list" class="result-list"></ul>
-            </div>
-
-            <div class="recommendation-box">
-                <h3><i class="fa-solid fa-shield"></i> Recommended action</h3>
-                <p id="recommended-action"></p>
-            </div>
-
-            <div class="result-actions">
-                <button class="button button-secondary" id="copy-message-result" type="button"><i class="fa-regular fa-copy"></i> Copy Result</button>
-                <button class="button button-secondary" id="download-message-report" type="button"><i class="fa-solid fa-download"></i> Download Report</button>
-                <span class="action-feedback" id="message-action-feedback" role="status"></span>
-            </div>
-            <p class="disclaimer">Results are estimates, not guarantees. Independently verify suspicious messages through an official, known channel.</p>
+            <div class="result-section"><h3><i class="fa-solid fa-circle-info" aria-hidden="true"></i> <span data-i18n="Why this result?">Why this result?</span></h3><ul id="message-explanations" class="result-list"></ul></div>
+            <div class="result-section"><h3><i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i> <span data-i18n="Words to review">Words to review</span></h3><ul id="message-keywords" class="tag-list"></ul></div>
+            <div class="result-section supplementary-section" id="supplementary-checks"><h3><i class="fa-solid fa-list-check" aria-hidden="true"></i> <span data-i18n="Additional pattern checks">Additional pattern checks</span></h3><p data-i18n="These checks are separate from the message classification.">These checks are separate from the message classification.</p><ul id="supplementary-checks-list" class="result-list"></ul></div>
+            <div class="recommendation-box"><h3><i class="fa-solid fa-shield-halved" aria-hidden="true"></i> <span data-i18n="Suggested next step">Suggested next step</span></h3><p id="recommended-action"></p></div>
+            <div class="result-actions"><button class="button button-outline" id="copy-message-result" type="button"><i class="fa-regular fa-copy" aria-hidden="true"></i> <span data-i18n="Copy result">Copy result</span></button><button class="button button-outline" id="download-message-report" type="button"><i class="fa-solid fa-download" aria-hidden="true"></i> <span data-i18n="Download report">Download report</span></button><span class="action-feedback" id="message-action-feedback" role="status"></span></div>
+            <p class="disclaimer" data-i18n="This is an estimate, not a guarantee. Confirm claims through an official, known channel.">This is an estimate, not a guarantee. Confirm claims through an official, known channel.</p>
         </section>
     </section>
 </main>

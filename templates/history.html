@@ -1,78 +1,32 @@
 {# Stable IDs: history-page, page-title, history-search, history-type-filter, history-classification-filter, clear-history-button, history-error, history-empty, history-table-body, history-details-modal, close-history-details, history-details-content #}
-{% extends "base.html" %}
-{% block title %}History | SpamShield{% endblock %}
+{% extends "base_app.html" %}
+{% block title %}Scan History | SpamShield{% endblock %}
+{% block breadcrumbs %}
+<nav class="breadcrumbs" aria-label="Breadcrumb" data-i18n-aria="Breadcrumb"><a href="{{ url_for('dashboard') }}" data-i18n="Workspace">Workspace</a><i class="fa-solid fa-chevron-right" aria-hidden="true"></i><span aria-current="page" data-i18n="Scan History">Scan History</span></nav>
+{% endblock %}
 {% block content %}
-<main class="section-shell history-page" id="history-page">
+<main class="section-shell app-page history-page" id="history-page">
     <header class="page-heading history-heading">
-        <div>
-            <p class="eyebrow">YOUR SCANS</p>
-            <h1 id="page-title">Scan History</h1>
-            <p>Search, filter, inspect, or remove saved scan records.</p>
-        </div>
-        <button class="button button-danger-outline" id="clear-history-button" type="button">
-            <i class="fa-solid fa-trash-can"></i> Clear History
-        </button>
+        <div><p class="eyebrow" data-i18n="YOUR SAVED CHECKS">YOUR SAVED CHECKS</p><h1 id="page-title" data-i18n="Scan History">Scan History</h1><p data-i18n="Search, review, or remove scans saved to your account.">Search, review, or remove scans saved to your account.</p></div>
+        <button class="button button-danger-outline" id="clear-history-button" type="button"><i class="fa-solid fa-trash-can" aria-hidden="true"></i> <span data-i18n="Clear my history">Clear my history</span></button>
     </header>
-
     <section class="panel history-panel">
         <div class="history-controls">
-            <label class="history-search-field" for="history-search">
-                <span>Search history</span>
-                <span class="search-input-wrap">
-                    <i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i>
-                    <input id="history-search" type="search" placeholder="Search message or source">
-                </span>
-            </label>
-            <label for="history-type-filter">
-                <span>Scan type</span>
-                <select id="history-type-filter">
-                    <option value="">All types</option>
-                    <option value="message">Messages</option>
-                    <option value="url">URLs</option>
-                </select>
-            </label>
-            <label for="history-classification-filter">
-                <span>Classification</span>
-                <select id="history-classification-filter">
-                    <option value="">All classifications</option>
-                    <option value="SAFE">Safe</option>
-                    <option value="SUSPICIOUS">Suspicious</option>
-                    <option value="SPAM">Spam</option>
-                    <option value="HIGH RISK">High risk</option>
-                </select>
-            </label>
+            <label class="history-search-field" for="history-search"><span data-i18n="Search history">Search history</span><span class="search-input-wrap"><i class="fa-solid fa-magnifying-glass" aria-hidden="true"></i><input id="history-search" type="search" placeholder="Search message or source" data-i18n-placeholder="Search message or source"></span></label>
+            <label for="history-type-filter"><span data-i18n="Scan type">Scan type</span><select id="history-type-filter"><option value="" data-i18n="All types">All types</option><option value="message" data-i18n="Messages">Messages</option><option value="url" data-i18n="Links">Links</option></select></label>
+            <label for="history-classification-filter"><span data-i18n="Result">Result</span><select id="history-classification-filter"><option value="" data-i18n="All results">All results</option><option value="SAFE" data-i18n="Safe">Safe</option><option value="SUSPICIOUS" data-i18n="Suspicious">Suspicious</option><option value="SPAM" data-i18n="Spam">Spam</option><option value="HIGH RISK" data-i18n="High risk">High risk</option></select></label>
         </div>
-
-        <p class="history-error" id="history-error" role="alert" hidden></p>
-        <p class="history-empty" id="history-empty" hidden>No scans match your filters yet.</p>
-
+        <p class="history-error inline-alert" id="history-error" role="alert" hidden></p>
+        <p class="history-empty empty-state" id="history-empty" hidden data-i18n="No scans match your filters yet. Your checks will appear here.">No scans match your filters yet. Your checks will appear here.</p>
         <div class="table-scroll">
             <table class="history-table">
-                <thead>
-                    <tr>
-                        <th scope="col">Content preview</th>
-                        <th scope="col">Type</th>
-                        <th scope="col">Classification</th>
-                        <th scope="col">Score</th>
-                        <th scope="col">Date and time</th>
-                        <th scope="col"><span class="visually-hidden">Actions</span></th>
-                    </tr>
-                </thead>
+                <thead><tr><th scope="col" data-i18n="Content preview">Content preview</th><th scope="col" data-i18n="Type">Type</th><th scope="col" data-i18n="Result">Result</th><th scope="col" data-i18n="Score">Score</th><th scope="col" data-i18n="Date and time">Date and time</th><th scope="col"><span class="visually-hidden" data-i18n="Actions">Actions</span></th></tr></thead>
                 <tbody id="history-table-body"></tbody>
             </table>
         </div>
     </section>
-
     <dialog class="details-dialog" id="history-details-modal" aria-labelledby="history-details-title">
-        <div class="details-dialog-header">
-            <div>
-                <p class="eyebrow">SAVED SCAN</p>
-                <h2 id="history-details-title">Scan Details</h2>
-            </div>
-            <button class="icon-button" id="close-history-details" type="button" aria-label="Close scan details">
-                <i class="fa-solid fa-xmark"></i>
-            </button>
-        </div>
+        <div class="details-dialog-header"><div><p class="eyebrow" data-i18n="SAVED CHECK">SAVED CHECK</p><h2 id="history-details-title" data-i18n="Scan Details">Scan Details</h2></div><button class="icon-button" id="close-history-details" type="button" aria-label="Close scan details" data-i18n-aria="Close scan details"><i class="fa-solid fa-xmark" aria-hidden="true"></i></button></div>
         <div class="details-content" id="history-details-content"></div>
     </dialog>
 </main>

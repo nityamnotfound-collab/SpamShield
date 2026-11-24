@@ -1,101 +1,106 @@
 {# Stable IDs: home-page, hero-title, get-started, how-it-works, features, threat-categories #}
-{% extends "base.html" %}
-
-{% block title %}SpamShield | Stay One Step Ahead{% endblock %}
-
+{% extends "base_public.html" %}
+{% block title %}SpamShield | Check before you act{% endblock %}
 {% block content %}
 <main id="home-page">
-    <section class="hero section-shell">
-        <div class="hero-copy">
-            <p class="eyebrow"><i class="fa-solid fa-shield-halved"></i> PRIVATE, LOCAL THREAT ESTIMATES</p>
-            <h1 id="hero-title">Stay One Step Ahead of Digital Threats.</h1>
-            <p class="hero-description">
-                Review suspicious messages and URLs for warning patterns before you act.
-                Your inbox is never accessed, and submitted links are never opened.
-            </p>
-            <a class="button button-primary" id="get-started" href="{{ url_for('message_scanner') }}">
-                Get Started <i class="fa-solid fa-arrow-right"></i>
-            </a>
-            <p class="hero-note"><i class="fa-solid fa-lock"></i> Your pasted content is analyzed as text only.</p>
-        </div>
-        <div class="hero-art" aria-hidden="true">
-            <div class="shield-orbit orbit-one"></div>
-            <div class="shield-orbit orbit-two"></div>
-            <div class="shield-core"><i class="fa-solid fa-shield-halved"></i></div>
-            <span class="orbit-dot dot-one"><i class="fa-solid fa-link"></i></span>
-            <span class="orbit-dot dot-two"><i class="fa-solid fa-envelope"></i></span>
-            <span class="orbit-dot dot-three"><i class="fa-solid fa-triangle-exclamation"></i></span>
+    <section class="home-hero">
+        <div class="section-shell hero-layout">
+            <div class="hero-copy">
+                <p class="eyebrow"><i class="fa-solid fa-shield-halved" aria-hidden="true"></i> <span data-i18n="PAUSE. CHECK. VERIFY.">PAUSE. CHECK. VERIFY.</span></p>
+                <h1 id="hero-title" data-i18n="Check a suspicious message before you act on it">Check a suspicious message before you act on it</h1>
+                <p class="hero-description" data-i18n="Review a message or link for warning patterns. SpamShield analyses only the text you choose to submit; it never opens links or accesses your inbox.">Review a message or link for warning patterns. SpamShield analyses only the text you choose to submit; it never opens links or accesses your inbox.</p>
+                <div class="hero-actions">
+                    <a class="button button-primary" id="get-started" href="{{ url_for('register') }}"><span data-i18n="Register">Register</span> <i class="fa-solid fa-arrow-right" aria-hidden="true"></i></a>
+                    <a class="button button-outline" href="{{ url_for('login') }}" data-i18n="Log in">Log in</a>
+                </div>
+                <p class="hero-note"><i class="fa-solid fa-lock" aria-hidden="true"></i> <span data-i18n="Your scan history is private to your account.">Your scan history is private to your account.</span></p>
+            </div>
+            <div class="hero-illustration" aria-hidden="true">
+                <div class="hero-shield"><i class="fa-solid fa-shield-halved"></i></div>
+                <span class="hero-chip chip-message"><i class="fa-solid fa-message"></i> <span data-i18n="Message">Message</span></span>
+                <span class="hero-chip chip-link"><i class="fa-solid fa-link"></i> <span data-i18n="Link">Link</span></span>
+                <span class="hero-check"><i class="fa-solid fa-check"></i></span>
+            </div>
         </div>
     </section>
 
     <section class="section-shell content-section" id="how-it-works">
-        <div class="section-heading">
-            <p class="eyebrow">A SIMPLE CHECK</p>
-            <h2>How It Works</h2>
-            <p>Make a more informed decision in three simple steps.</p>
-        </div>
+        <header class="section-heading">
+            <p class="eyebrow" data-i18n="A SIMPLE THREE-STEP CHECK">A SIMPLE THREE-STEP CHECK</p>
+            <h2 data-i18n="Pause before you respond">Pause before you respond</h2>
+            <p data-i18n="Use the result as one input, then verify unexpected requests through trusted channels.">Use the result as one input, then verify unexpected requests through trusted channels.</p>
+        </header>
         <div class="steps-grid">
-            <article class="info-card step-card">
+            <article class="step-card">
                 <span class="step-number">01</span>
-                <span class="feature-icon"><i class="fa-solid fa-paste"></i></span>
-                <h3>Paste</h3>
-                <p>Paste a message or URL you want to review. SpamShield never connects to your inbox.</p>
+                <span class="step-icon" aria-hidden="true"><i class="fa-solid fa-paste"></i></span>
+                <h3 data-i18n="Paste">Paste</h3>
+                <p data-i18n="Copy in a suspicious message or type a link. Nothing is fetched or opened.">Copy in a suspicious message or type a link. Nothing is fetched or opened.</p>
             </article>
-            <article class="info-card step-card">
+            <article class="step-card">
                 <span class="step-number">02</span>
-                <span class="feature-icon"><i class="fa-solid fa-magnifying-glass-chart"></i></span>
-                <h3>Analyse</h3>
-                <p>Local machine-learning estimates and pattern checks highlight possible warning signs.</p>
+                <span class="step-icon" aria-hidden="true"><i class="fa-solid fa-magnifying-glass"></i></span>
+                <h3 data-i18n="Analyse">Analyse</h3>
+                <p data-i18n="Review an estimate and the patterns that may deserve a closer look.">Review an estimate and the patterns that may deserve a closer look.</p>
             </article>
-            <article class="info-card step-card">
+            <article class="step-card">
                 <span class="step-number">03</span>
-                <span class="feature-icon"><i class="fa-solid fa-hand"></i></span>
-                <h3>Act</h3>
-                <p>Review the explanation and choose a cautious next step. Results are estimates, not guarantees.</p>
+                <span class="step-icon" aria-hidden="true"><i class="fa-solid fa-hand"></i></span>
+                <h3 data-i18n="Act">Act</h3>
+                <p data-i18n="Pause and verify the sender independently before sharing information or money.">Pause and verify the sender independently before sharing information or money.</p>
             </article>
         </div>
     </section>
 
-    <section class="section-shell content-section" id="features">
-        <div class="section-heading">
-            <p class="eyebrow">DESIGNED FOR AWARENESS</p>
-            <h2>Features that put you in control</h2>
-        </div>
-        <div class="features-grid">
-            <article class="feature-item">
-                <span class="feature-icon"><i class="fa-solid fa-user-shield"></i></span>
-                <div><h3>Privacy-first checks</h3><p>Manually submitted text is analyzed without accessing your messages or inbox.</p></div>
-            </article>
-            <article class="feature-item">
-                <span class="feature-icon"><i class="fa-solid fa-brain"></i></span>
-                <div><h3>Explainable estimates</h3><p>See patterns that contributed to an estimate instead of relying on a bare label.</p></div>
-            </article>
-            <article class="feature-item">
-                <span class="feature-icon"><i class="fa-solid fa-link-slash"></i></span>
-                <div><h3>URLs are not visited</h3><p>Submitted URLs are inspected as text and are not checked against an external threat database.</p></div>
-            </article>
-            <article class="feature-item">
-                <span class="feature-icon"><i class="fa-solid fa-chart-line"></i></span>
-                <div><h3>Activity at a glance</h3><p>Review scan activity and model metrics from the dashboard and history pages.</p></div>
-            </article>
+    <section class="service-section" id="features">
+        <div class="section-shell">
+            <header class="section-heading">
+                <p class="eyebrow" data-i18n="SERVICES">SERVICES</p>
+                <h2 data-i18n="Choose what you need">Choose what you need</h2>
+            </header>
+            <div class="service-grid">
+                <a class="service-card" href="{{ url_for('message_scanner' if session.get('user_id') else 'login') }}">
+                    <span class="service-icon" aria-hidden="true"><i class="fa-solid fa-message"></i></span>
+                    <span><strong data-i18n="Message Check">Message Check</strong><small data-i18n="Review a message for common warning signs.">Review a message for common warning signs.</small></span>
+                    <i class="fa-solid fa-arrow-right service-arrow" aria-hidden="true"></i>
+                </a>
+                <a class="service-card" href="{{ url_for('url_scanner' if session.get('user_id') else 'login') }}">
+                    <span class="service-icon" aria-hidden="true"><i class="fa-solid fa-link"></i></span>
+                    <span><strong data-i18n="Link Check">Link Check</strong><small data-i18n="Inspect URL text without visiting it.">Inspect URL text without visiting it.</small></span>
+                    <i class="fa-solid fa-arrow-right service-arrow" aria-hidden="true"></i>
+                </a>
+                <a class="service-card" href="{{ url_for('history_page' if session.get('user_id') else 'login') }}">
+                    <span class="service-icon" aria-hidden="true"><i class="fa-solid fa-clock-rotate-left"></i></span>
+                    <span><strong data-i18n="Scan History">Scan History</strong><small data-i18n="Find and manage your saved checks.">Find and manage your saved checks.</small></span>
+                    <i class="fa-solid fa-arrow-right service-arrow" aria-hidden="true"></i>
+                </a>
+                <a class="service-card" href="{{ url_for('scam_awareness') }}">
+                    <span class="service-icon" aria-hidden="true"><i class="fa-solid fa-shield-heart"></i></span>
+                    <span><strong data-i18n="Scam Awareness">Scam Awareness</strong><small data-i18n="Learn warning signs and safer next steps.">Learn warning signs and safer next steps.</small></span>
+                    <i class="fa-solid fa-arrow-right service-arrow" aria-hidden="true"></i>
+                </a>
+            </div>
         </div>
     </section>
 
     <section class="section-shell content-section categories-section" id="threat-categories">
-        <div class="section-heading">
-            <p class="eyebrow">COMMON WARNING PATTERNS</p>
-            <h2>Supported Threat Categories</h2>
-            <p>SpamShield estimates risk for common patterns, including:</p>
-        </div>
+        <header class="section-heading">
+            <p class="eyebrow" data-i18n="WHAT TO LOOK OUT FOR">WHAT TO LOOK OUT FOR</p>
+            <h2 data-i18n="Common scam patterns">Common scam patterns</h2>
+            <p data-i18n="Examples of patterns a message or link check may help you notice.">Examples of patterns a message or link check may help you notice.</p>
+        </header>
         <div class="category-list">
-            <span><i class="fa-solid fa-building-columns"></i> Banking fraud</span>
-            <span><i class="fa-solid fa-ticket"></i> Lottery scams</span>
-            <span><i class="fa-solid fa-fish"></i> Phishing</span>
-            <span><i class="fa-solid fa-briefcase"></i> Fake job offers</span>
-            <span><i class="fa-solid fa-box"></i> Delivery scams</span>
-            <span><i class="fa-solid fa-mobile-screen-button"></i> OTP scams</span>
-            <span><i class="fa-solid fa-bullhorn"></i> Promotional spam</span>
+            <span><i class="fa-solid fa-building-columns" aria-hidden="true"></i> <span data-i18n="Banking and KYC messages">Banking and KYC messages</span></span>
+            <span><i class="fa-solid fa-ticket" aria-hidden="true"></i> <span data-i18n="Prize and lottery claims">Prize and lottery claims</span></span>
+            <span><i class="fa-solid fa-fish" aria-hidden="true"></i> <span data-i18n="Phishing links">Phishing links</span></span>
+            <span><i class="fa-solid fa-briefcase" aria-hidden="true"></i> <span data-i18n="Fee-based job offers">Fee-based job offers</span></span>
+            <span><i class="fa-solid fa-box" aria-hidden="true"></i> <span data-i18n="Delivery and parcel requests">Delivery and parcel requests</span></span>
+            <span><i class="fa-solid fa-mobile-screen-button" aria-hidden="true"></i> <span data-i18n="OTP requests">OTP requests</span></span>
         </div>
+        <aside class="notice notice-info">
+            <i class="fa-solid fa-circle-info" aria-hidden="true"></i>
+            <p data-i18n="Automated results can be wrong. Never share an OTP, password, UPI PIN or payment details in response to an unexpected request.">Automated results can be wrong. Never share an OTP, password, UPI PIN or payment details in response to an unexpected request.</p>
+        </aside>
     </section>
 </main>
 {% endblock %}

@@ -1,22 +1,25 @@
-// Shared page IDs: site-nav, menu-toggle, theme-toggle.
+// Shared page IDs: site-nav, menu-toggle, main-content.
 function getElement(elementId) {
     return document.getElementById(elementId);
 }
 
-// Keep the theme control and mobile navigation safe to use on every page.
 const siteNavigation = getElement("site-nav");
 const menuToggle = getElement("menu-toggle");
-const themeToggle = getElement("theme-toggle");
+const appScrim = document.querySelector("[data-close-sidebar]");
 
 if (menuToggle && siteNavigation) {
     const menuIcon = menuToggle.querySelector("i");
 
     menuToggle.addEventListener("click", () => {
         const isOpen = siteNavigation.classList.toggle("is-open");
+        document.body.classList.toggle("sidebar-open", isOpen);
+        if (appScrim) {
+            appScrim.hidden = !isOpen;
+        }
         menuToggle.setAttribute("aria-expanded", String(isOpen));
         menuToggle.setAttribute(
             "aria-label",
-            isOpen ? "Close navigation menu" : "Open navigation menu"
+            t(isOpen ? "Close navigation menu" : "Open navigation menu")
         );
 
         if (menuIcon) {
@@ -29,52 +32,37 @@ if (menuToggle && siteNavigation) {
     siteNavigation.querySelectorAll("a").forEach((link) => {
         link.addEventListener("click", () => {
             siteNavigation.classList.remove("is-open");
+            document.body.classList.remove("sidebar-open");
+            if (appScrim) {
+                appScrim.hidden = true;
+            }
             menuToggle.setAttribute("aria-expanded", "false");
+            menuToggle.setAttribute("aria-label", t("Open navigation menu"));
         });
     });
 }
 
-function applyTheme(theme) {
-    document.documentElement.dataset.theme = theme;
-    if (!themeToggle) {
-        return;
-    }
-
-    const themeIcon = themeToggle.querySelector("i");
-    const isDark = theme === "dark";
-    themeToggle.setAttribute(
-        "aria-label",
-        isDark ? "Switch to light theme" : "Switch to dark theme"
-    );
-
-    if (themeIcon) {
-        themeIcon.className = isDark
-            ? "fa-solid fa-sun"
-            : "fa-solid fa-moon";
-    }
-}
-
-let savedTheme = "dark";
-try {
-    const storedTheme = localStorage.getItem("spamshield-theme");
-    if (storedTheme === "light" || storedTheme === "dark") {
-        savedTheme = storedTheme;
-    }
-} catch (error) {
-    // The default theme still works when browser storage is unavailable.
-}
-applyTheme(savedTheme);
-
-if (themeToggle) {
-    themeToggle.addEventListener("click", () => {
-        const nextTheme =
-            document.documentElement.dataset.theme === "dark" ? "light" : "dark";
-        applyTheme(nextTheme);
-        try {
-            localStorage.setItem("spamshield-theme", nextTheme);
-        } catch (error) {
-            // Theme switching remains available for the current page.
+if (appScrim && menuToggle && siteNavigation) {
+    appScrim.addEventListener("click", () => {
+        siteNavigation.classList.remove("is-open");
+        document.body.classList.remove("sidebar-open");
+        appScrim.hidden = true;
+        menuToggle.setAttribute("aria-expanded", "false");
+        menuToggle.setAttribute("aria-label", t("Open navigation menu"));
+        const menuIcon = menuToggle.querySelector("i");
+        if (menuIcon) {
+            menuIcon.className = "fa-solid fa-bars";
         }
+    });
+}
+
+const fontSizeButtons = document.querySelectorAll("[data-font-size]");
+if (fontSizeButtons.length) {
+    fontSizeButtons.forEach((button) => {
+        button.addEventListener("click", () => {
+            document.documentElement.style.fontSize =
+                button.getAttribute("data-font-size") + "px";
+        });
     });
 }
 
@@ -103,19 +91,48 @@ function setBadge(badge, classification) {
     if (!badge) {
         return;
     }
-    const safeClassification = String(classification || "UNKNOWN");
-    badge.textContent = safeClassification;
-    badge.className = "classification-badge " +
-        safeClassification.toLowerCase().replace(/\s+/g, "-");
+    const result = String(classification || "UNKNOWN").trim().toUpperCase();
+    const statuses = {
+        SAFE: ["safe", "fa-circle-check", t("SAFE")],
+        SPAM: ["spam", "fa-circle-xmark", t("SPAM")],
+        SUSPICIOUS: ["suspicious", "fa-triangle-exclamation", t("SUSPICIOUS")],
+        "HIGH RISK": ["high-risk", "fa-circle-exclamation", t("HIGH RISK")],
+    };
+    const status = statuses[result] || [
+        "unknown",
+        "fa-circle-info",
+        result === "UNKNOWN" ? t("Result unavailable") : result,
+    ];
+    const icon = document.createElement("i");
+    icon.className = "fa-solid " + status[1];
+    icon.setAttribute("aria-hidden", "true");
+    const label = document.createElement("span");
+    label.textContent = status[2];
+    badge.replaceChildren(icon, label);
+    badge.className = "classification-badge status-badge status-" + status[0];
 }
 
 function showFriendlyError(errorElement, message) {
     if (!errorElement) {
         return;
     }
-    errorElement.textContent = message;
+    setRuntimeText(errorElement, message);
     errorElement.hidden = false;
 }
+
+function setRuntimeText(element, message) {
+    if (!element) {
+        return;
+    }
+    element.dataset.i18nLive = message;
+    element.textContent = t(message);
+}
+
+window.addEventListener("spamshield:languagechange", () => {
+    document.querySelectorAll("[data-i18n-live]").forEach((element) => {
+        element.textContent = t(element.dataset.i18nLive);
+    });
+});
 
 function downloadTextFile(fileName, text, mimeType) {
     const file = new Blob([text], { type: mimeType });
@@ -129,93 +146,378 @@ function downloadTextFile(fileName, text, mimeType) {
     window.setTimeout(() => URL.revokeObjectURL(fileUrl), 1000);
 }
 
-// Dashboard: load real database counts and the latest saved scans.
+const DASHBOARD_UPDATE_CHANNEL = "spamshield-scan-updates";
+const dashboardUpdateChannel = typeof BroadcastChannel !== "undefined"
+    ? new BroadcastChannel(DASHBOARD_UPDATE_CHANNEL)
+    : null;
+if (dashboardUpdateChannel) {
+    window.addEventListener(
+        "pagehide",
+        () => dashboardUpdateChannel.close(),
+        { once: true }
+    );
+}
+
+function notifyDashboardDataChanged() {
+    window.dispatchEvent(new Event("spamshield:data-changed"));
+    if (dashboardUpdateChannel) {
+        dashboardUpdateChannel.postMessage("updated");
+    }
+}
+
+// Dashboard: fetch user-scoped stats and refresh the charts and activity.
 const dashboardPage = getElement("dashboard-page");
 if (dashboardPage) {
-    let dashboardChart = null;
+    const rangeSelect = getElement("dashboard-range");
+    const refreshButton = getElement("dashboard-refresh");
+    const errorElement = getElement("dashboard-error");
+    const emptyState = getElement("dashboard-empty");
+    const dashboardData = getElement("dashboard-data");
+    const detailsDialog = getElement("dashboard-details-modal");
+    const detailsError = getElement("dashboard-details-error");
+    const charts = {};
+    let activeController = null;
+    let hasLoaded = false;
+    let latestDashboardStats = null;
+    let latestDetailsScan = null;
 
-    async function loadDashboard() {
-        const errorElement = getElement("dashboard-error");
-        try {
-            const response = await fetch("/api/dashboard-stats");
-            const stats = await response.json();
-            if (!response.ok) {
-                throw new Error("Dashboard data is unavailable.");
-            }
-
-            getElement("total-messages").textContent = stats.messages;
-            getElement("safe-count").textContent = stats.safe;
-            getElement("spam-count").textContent = stats.spam;
-            getElement("suspicious-count").textContent = stats.suspicious;
-            getElement("urls-analysed").textContent = stats.urls;
-            drawDashboardChart(stats.spam_vs_safe || []);
-            renderRecentScans(stats.last_five || []);
-            errorElement.hidden = true;
-        } catch (error) {
-            showFriendlyError(
-                errorElement,
-                "Dashboard data could not be loaded. Please try again."
-            );
-        }
+    function dashboardColor(token) {
+        return getComputedStyle(document.documentElement)
+            .getPropertyValue(token)
+            .trim();
     }
 
-    function drawDashboardChart(counts) {
-        const canvas = getElement("spam-safe-chart");
-        if (!canvas || typeof Chart === "undefined") {
-            return;
-        }
-
-        const labels = counts.map((item) => item.prediction);
-        const values = counts.map((item) => item.count);
-
-        if (dashboardChart) {
-            dashboardChart.destroy();
-        }
-
-        dashboardChart = new Chart(canvas, {
-            type: "doughnut",
-            data: {
-                labels: labels,
-                datasets: [{
-                    data: values,
-                    backgroundColor: ["#22c55e", "#ef4444"],
-                    borderColor: getComputedStyle(document.documentElement)
-                        .getPropertyValue("--card")
-                        .trim(),
-                    borderWidth: 4,
-                }],
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: false,
-                plugins: {
-                    legend: {
-                        position: "bottom",
-                        labels: {
-                            color: getComputedStyle(document.documentElement)
-                                .getPropertyValue("--text")
-                                .trim(),
-                            usePointStyle: true,
-                            padding: 18,
-                        },
+    function chartOptions(legendPosition) {
+        return {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    display: Boolean(legendPosition),
+                    position: legendPosition || "top",
+                    labels: {
+                        color: dashboardColor("--text"),
+                        usePointStyle: true,
+                        padding: 16,
                     },
                 },
             },
+            scales: {
+                x: {
+                    ticks: { color: dashboardColor("--muted") },
+                    grid: { color: dashboardColor("--border") },
+                },
+                y: {
+                    beginAtZero: true,
+                    ticks: { color: dashboardColor("--muted"), precision: 0 },
+                    grid: { color: dashboardColor("--border") },
+                },
+            },
+        };
+    }
+
+    function replaceDashboardChart(canvasId, type, data, options) {
+        const canvas = getElement(canvasId);
+        if (!canvas || typeof Chart === "undefined") {
+            return;
+        }
+        if (charts[canvasId]) {
+            charts[canvasId].destroy();
+        }
+        charts[canvasId] = new Chart(canvas, {
+            type: type,
+            data: data,
+            options: options,
         });
+    }
+
+    function formatDate(dateString) {
+        const date = new Date(dateString + "T00:00:00");
+        return Number.isNaN(date.getTime())
+            ? dateString
+            : new Intl.DateTimeFormat(
+                getCurrentLanguage() === "hi" ? "hi-IN" : "en-IN", {
+                month: "short",
+                day: "numeric",
+                }
+            ).format(date);
+    }
+
+    function renderScansPerDay(scans) {
+        const safe = dashboardColor("--safe");
+        const accent = dashboardColor("--accent");
+        replaceDashboardChart(
+            "scans-per-day-chart",
+            "line",
+            {
+                labels: scans.map((day) => formatDate(day.date)),
+                datasets: [
+                    {
+                        label: t("Messages"),
+                        data: scans.map((day) => day.messages),
+                        borderColor: accent,
+                        backgroundColor: accent,
+                        tension: 0.25,
+                    },
+                    {
+                        label: t("URLs"),
+                        data: scans.map((day) => day.urls),
+                        borderColor: safe,
+                        backgroundColor: safe,
+                        tension: 0.25,
+                    },
+                ],
+            },
+            Object.assign(chartOptions("bottom"), {
+                interaction: { intersect: false, mode: "index" },
+                scales: {
+                    x: Object.assign(chartOptions().scales.x, {
+                        ticks: Object.assign(chartOptions().scales.x.ticks, {
+                            maxTicksLimit: 10,
+                        }),
+                    }),
+                    y: chartOptions().scales.y,
+                },
+            })
+        );
+        getElement("scans-per-day-summary").textContent = scans.length
+            ? scans.map((day) => t("{date}: {count}", {
+                date: formatDate(day.date),
+                count: day.total,
+            })).join("; ")
+            : t("No scans in this period.");
+    }
+
+    function renderResults(stats) {
+        const values = [stats.safe, stats.suspicious, stats.spam].map(Number);
+        replaceDashboardChart(
+            "result-chart",
+            "doughnut",
+            {
+                labels: [t("SAFE"), t("SUSPICIOUS"), t("SPAM")],
+                datasets: [{
+                    data: values,
+                    backgroundColor: [
+                        dashboardColor("--safe"),
+                        dashboardColor("--warning"),
+                        dashboardColor("--danger"),
+                    ],
+                    borderColor: dashboardColor("--surface"),
+                    borderWidth: 3,
+                }],
+            },
+            Object.assign(chartOptions("bottom"), { cutout: "62%" })
+        );
+        getElement("result-chart-summary").textContent =
+            t("SAFE") + ": " + values[0] + "; " + t("SUSPICIOUS") + ": " +
+            values[1] + "; " + t("SPAM") + ": " + values[2] + ".";
+    }
+
+    function renderSources(sources) {
+        const labels = sources.map((item) => t(item.source));
+        const values = sources.map((item) => item.count);
+        replaceDashboardChart(
+            "source-chart",
+            "bar",
+            {
+                labels: labels,
+                datasets: [{
+                    label: t("Scans"),
+                    data: values,
+                    backgroundColor: dashboardColor("--accent"),
+                    borderRadius: 5,
+                }],
+            },
+            Object.assign(chartOptions(false), {
+                indexAxis: "x",
+                plugins: { legend: { display: false } },
+            })
+        );
+        getElement("source-chart-summary").textContent = sources.length
+            ? sources.map((item) => t("{source}: {count}", {
+                source: t(item.source),
+                count: item.count,
+            })).join("; ")
+            : t("No scan sources in this period.");
+    }
+
+    function categoryLabel(category) {
+        const labels = {
+            banking: t("Banking"),
+            lottery: t("Lottery"),
+            otp: t("OTP"),
+            phishing: t("Phishing"),
+            fake_job: t("Fake job"),
+            delivery: t("Delivery"),
+            promotional: t("Promotional"),
+        };
+        return labels[category] || category;
+    }
+
+    function renderCategories(categories) {
+        const labels = categories.map((item) => categoryLabel(item.category));
+        const values = categories.map((item) => item.count);
+        replaceDashboardChart(
+            "category-chart",
+            "bar",
+            {
+                labels: labels,
+                datasets: [{
+                    label: t("Scans"),
+                    data: values,
+                    backgroundColor: dashboardColor("--warning"),
+                    borderRadius: 5,
+                }],
+            },
+            Object.assign(chartOptions(false), {
+                indexAxis: "y",
+                plugins: { legend: { display: false } },
+                scales: {
+                    x: chartOptions().scales.x,
+                    y: Object.assign(chartOptions().scales.y, {
+                        grid: { display: false },
+                    }),
+                },
+            })
+        );
+        getElement("category-chart-summary").textContent = categories.length
+            ? categories.map((item) => t("{source}: {count}", {
+                source: categoryLabel(item.category),
+                count: item.count,
+            })).join("; ")
+            : t("No scam categories in this period.");
+    }
+
+    function renderChange(elementId, change, rangeName) {
+        const element = getElement(elementId);
+        element.classList.remove("is-up", "is-down");
+        if (!change || change.percent === null || change.percent === undefined) {
+            element.textContent = rangeName === "all"
+                ? t("No previous period for all time")
+                : t("No previous-period data");
+            return;
+        }
+
+        const percent = Number(change.percent);
+        const icon = document.createElement("i");
+        icon.className = percent > 0
+            ? "fa-solid fa-arrow-trend-up"
+            : percent < 0 ? "fa-solid fa-arrow-trend-down" : "fa-solid fa-minus";
+        icon.setAttribute("aria-hidden", "true");
+        const label = document.createElement("span");
+        label.textContent = t("{percent}% vs previous period", {
+            percent: (percent > 0 ? "+" : "") + percent,
+        });
+        element.replaceChildren(icon, label);
+        if (percent > 0) {
+            element.classList.add("is-up");
+        } else if (percent < 0) {
+            element.classList.add("is-down");
+        }
+    }
+
+    function renderKeywords(keywords) {
+        const list = getElement("top-keywords");
+        list.replaceChildren();
+        if (!keywords.length) {
+            const item = document.createElement("li");
+            item.textContent = t("No suspicious keywords found in this period.");
+            list.appendChild(item);
+            return;
+        }
+
+        keywords.forEach((entry) => {
+            const item = document.createElement("li");
+            const row = document.createElement("span");
+            row.className = "keyword-row";
+            const keyword = document.createElement("strong");
+            keyword.textContent = entry.keyword;
+            const count = document.createElement("span");
+            count.className = "keyword-count";
+            count.textContent = t(
+                entry.count === 1 ? "{count} scan" : "{count} scans",
+                { count: entry.count }
+            );
+            row.append(keyword, count);
+            item.appendChild(row);
+            list.appendChild(item);
+        });
+    }
+
+    function formatTimestamp(value) {
+        const date = new Date(String(value).replace(" ", "T") + "Z");
+        return Number.isNaN(date.getTime())
+            ? String(value || "")
+            : new Intl.DateTimeFormat(
+                getCurrentLanguage() === "hi" ? "hi-IN" : "en-IN", {
+                dateStyle: "medium",
+                timeStyle: "short",
+                }
+            ).format(date);
+    }
+
+    async function showDashboardDetails(scanId) {
+        detailsError.hidden = true;
+        try {
+            const response = await fetch(
+                "/api/history/" + encodeURIComponent(String(scanId))
+            );
+            const scan = await response.json();
+            if (!response.ok) {
+                throw new Error(t("Scan details could not be loaded."));
+            }
+
+            latestDetailsScan = scan;
+            renderDashboardDetails(scan);
+            detailsDialog.showModal();
+        } catch (error) {
+            showFriendlyError(
+                detailsError,
+                "Scan details are unavailable right now. Please try again."
+            );
+            if (!detailsDialog.open) {
+                detailsDialog.showModal();
+            }
+        }
+    }
+
+    function renderDashboardDetails(scan) {
+        const details = getElement("dashboard-details-content");
+        details.replaceChildren();
+        [
+            [t("Type"), t(scan.scan_type === "url" ? "URL" : "Message")],
+            [t("Source"), t(scan.source)],
+            [t("Classification"), t(scan.prediction)],
+            [t("Score"), String(scan.score) + "%"],
+            [t("Date and time"), scan.created_at],
+            [t("Content"), scan.content],
+            [t("Explanation"), scan.explanation],
+            [t("Categories"), (scan.categories || []).map(categoryLabel)],
+            [t("Keywords"), scan.keywords],
+        ].forEach(([title, value]) => appendDashboardDetail(details, title, value));
+    }
+
+    function appendDashboardDetail(container, label, value) {
+        const row = document.createElement("div");
+        row.className = "detail-row";
+        const heading = document.createElement("strong");
+        heading.textContent = label;
+        const content = document.createElement("p");
+        content.textContent = Array.isArray(value)
+            ? value.join("\n")
+            : value === undefined || value === null ? "" : String(value);
+        row.append(heading, content);
+        container.appendChild(row);
     }
 
     function renderRecentScans(scans) {
         const tableBody = getElement("recent-scans-body");
-        if (!tableBody) {
-            return;
-        }
-
         tableBody.replaceChildren();
-        if (scans.length === 0) {
+        if (!scans.length) {
             const row = document.createElement("tr");
             const cell = document.createElement("td");
             cell.colSpan = 5;
-            cell.textContent = "No scans yet.";
+            cell.textContent = t("No recent scans.");
             row.appendChild(cell);
             tableBody.appendChild(row);
             return;
@@ -223,23 +525,169 @@ if (dashboardPage) {
 
         scans.forEach((scan) => {
             const row = document.createElement("tr");
-            const rowValues = [
-                scan.scan_type,
-                scan.content,
-                scan.prediction,
-                scan.score === undefined ? "" : String(scan.score) + "%",
-                scan.created_at,
-            ];
-            rowValues.forEach((value) => {
-                const cell = document.createElement("td");
-                cell.textContent = value === undefined || value === null
-                    ? ""
-                    : String(value);
-                row.appendChild(cell);
+            const type = t(scan.scan_type === "url" ? "URL" : "Message");
+            row.tabIndex = 0;
+            row.setAttribute(
+                "aria-label",
+                t("Open {type} scan details: {classification}", {
+                    type: type.toLowerCase(),
+                    classification: t(scan.prediction),
+                })
+            );
+            row.addEventListener("click", () => showDashboardDetails(scan.id));
+            row.addEventListener("keydown", (event) => {
+                if (event.key === "Enter" || event.key === " ") {
+                    event.preventDefault();
+                    showDashboardDetails(scan.id);
+                }
             });
+
+            const typeCell = document.createElement("td");
+            typeCell.textContent = type;
+            const contentCell = document.createElement("td");
+            contentCell.className = "activity-preview";
+            contentCell.textContent = scan.content || "";
+            contentCell.title = scan.content || "";
+            const resultCell = document.createElement("td");
+            const badge = document.createElement("span");
+            setBadge(badge, scan.prediction);
+            resultCell.appendChild(badge);
+            const scoreCell = document.createElement("td");
+            scoreCell.textContent = String(scan.score) + "%";
+            const dateCell = document.createElement("td");
+            dateCell.textContent = formatTimestamp(scan.created_at);
+            row.append(typeCell, contentCell, resultCell, scoreCell, dateCell);
             tableBody.appendChild(row);
         });
     }
+
+    function renderDashboard(stats) {
+        latestDashboardStats = stats;
+        [
+            ["total-messages", stats.messages],
+            ["safe-count", stats.safe],
+            ["spam-count", stats.spam],
+            ["suspicious-count", stats.suspicious],
+            ["urls-analysed", stats.urls],
+            ["url-safe-count", stats.url_risk_counts.SAFE],
+            ["url-suspicious-count", stats.url_risk_counts.SUSPICIOUS],
+            ["url-spam-count", stats.url_risk_counts.SPAM],
+            ["url-high-risk-count", stats.url_risk_counts["HIGH RISK"]],
+        ].forEach(([elementId, value]) => {
+            getElement(elementId).textContent = String(value);
+        });
+        renderChange("messages-change", stats.changes.messages, stats.range);
+        renderChange("safe-change", stats.changes.safe, stats.range);
+        renderChange("spam-change", stats.changes.spam, stats.range);
+        renderChange("suspicious-change", stats.changes.suspicious, stats.range);
+        renderChange("urls-change", stats.changes.urls, stats.range);
+        renderScansPerDay(stats.scans_per_day);
+        renderResults(stats);
+        renderSources(stats.sources);
+        renderCategories(stats.categories);
+        renderKeywords(stats.top_keywords);
+        renderRecentScans(stats.recent_scans);
+
+        const isEmpty = stats.lifetime_total === 0;
+        emptyState.hidden = !isEmpty;
+        dashboardData.hidden = isEmpty;
+        const updated = new Date();
+        const updatedElement = getElement("last-updated");
+        updatedElement.dateTime = updated.toISOString();
+        updatedElement.textContent = new Intl.DateTimeFormat(
+            getCurrentLanguage() === "hi" ? "hi-IN" : "en-IN", {
+            dateStyle: "medium",
+            timeStyle: "short",
+            }
+        ).format(updated);
+    }
+
+    async function loadDashboard() {
+        if (activeController) {
+            activeController.abort();
+        }
+        const controller = new AbortController();
+        activeController = controller;
+        dashboardPage.setAttribute("aria-busy", "true");
+        errorElement.hidden = true;
+        refreshButton.disabled = true;
+
+        try {
+            const query = new URLSearchParams({ range: rangeSelect.value });
+            const response = await fetch(
+                "/api/dashboard-stats?" + query.toString(),
+                { signal: controller.signal }
+            );
+            const stats = await response.json();
+            if (!response.ok) {
+                throw new Error(stats.error || t("Dashboard data is unavailable."));
+            }
+            if (controller !== activeController) {
+                return;
+            }
+
+            renderDashboard(stats);
+            hasLoaded = true;
+        } catch (error) {
+            if (error.name !== "AbortError" && controller === activeController) {
+                if (!hasLoaded) {
+                    [
+                        "total-messages",
+                        "safe-count",
+                        "spam-count",
+                        "suspicious-count",
+                        "urls-analysed",
+                    ].forEach((elementId) => {
+                        getElement(elementId).textContent = "—";
+                    });
+                    getElement("recent-scans-body").textContent =
+                        t("Dashboard data is unavailable.");
+                }
+                showFriendlyError(
+                    errorElement,
+                    "Dashboard data could not be loaded. Please try again."
+                );
+            }
+        } finally {
+            if (controller === activeController) {
+                dashboardPage.setAttribute("aria-busy", "false");
+                refreshButton.disabled = false;
+            }
+        }
+    }
+
+    rangeSelect.addEventListener("change", loadDashboard);
+    refreshButton.addEventListener("click", loadDashboard);
+    window.addEventListener("spamshield:data-changed", loadDashboard);
+    document.addEventListener("visibilitychange", () => {
+        if (document.visibilityState === "visible") {
+            loadDashboard();
+        }
+    });
+    window.addEventListener("spamshield:languagechange", () => {
+        if (latestDashboardStats) {
+            renderDashboard(latestDashboardStats);
+        }
+        if (latestDetailsScan) {
+            renderDashboardDetails(latestDetailsScan);
+        }
+    });
+    if (dashboardUpdateChannel) {
+        dashboardUpdateChannel.addEventListener("message", loadDashboard);
+    }
+    getElement("close-dashboard-details").addEventListener("click", () => {
+        detailsDialog.close();
+    });
+    detailsDialog.addEventListener("click", (event) => {
+        if (event.target === detailsDialog) {
+            detailsDialog.close();
+        }
+    });
+    window.setInterval(() => {
+        if (document.visibilityState === "visible") {
+            loadDashboard();
+        }
+    }, 30000);
 
     loadDashboard();
 }
@@ -269,24 +717,30 @@ if (messageForm) {
     }
 
     function makeMessageReportText(result) {
+        const localized = result.localizations
+            ? result.localizations[getCurrentLanguage()]
+            : result;
         return [
-            "SpamShield Message Estimate",
-            "Classification: " + result.classification,
-            "ML prediction: " + result.ml_prediction,
-            "Spam probability: " + result.confidence + "%",
-            "Risk level: " + result.risk_level,
-            "Explanation:",
-            ...(result.explanation || []).map((item) => "- " + item),
-            "Suspicious keywords:",
+            t("SpamShield Message Estimate"),
+            t("Classification") + ": " + t(result.classification),
+            t("ML prediction") + ": " + t(result.ml_prediction),
+            t("Spam probability") + ": " + result.confidence + "%",
+            t("Risk level") + ": " + t(result.risk_level),
+            t("Explanation") + ":",
+            ...(localized.explanation || []).map((item) => "- " + item),
+            t("Words to review") + ":",
             ...(result.suspicious_keywords || []).map((item) => "- " + item),
-            "Supplementary security checks (separate from ML prediction):",
-            ...(result.supplementary_checks || []).map((item) => "- " + item),
-            "Recommended action: " + result.recommended_action,
-            "Results are estimates. Independently verify suspicious messages.",
+            t("Additional pattern checks") + ":",
+            ...(localized.keyword_descriptions || []).map((item) => "- " + item),
+            t("Suggested next step") + ": " + localized.recommended_action,
+            t("Results are estimates. Independently verify suspicious messages."),
         ].join("\n");
     }
 
     function renderMessageResult(result) {
+        const localized = result.localizations
+            ? result.localizations[getCurrentLanguage()]
+            : result;
         setBadge(getElement("message-classification"), result.classification);
 
         const confidence = Math.max(
@@ -299,31 +753,28 @@ if (messageForm) {
         confidenceBar.style.width = confidence + "%";
         confidenceBar.parentElement.setAttribute("aria-valuenow", confidence);
 
-        getElement("message-risk-level").textContent = result.risk_level || "";
+        getElement("message-risk-level").textContent = t(result.risk_level || "");
         fillList(
             getElement("message-explanations"),
-            result.explanation,
-            "No explanation details were returned."
+            localized.explanation,
+            t("No explanation details were returned.")
         );
         fillList(
             getElement("message-keywords"),
             result.suspicious_keywords,
-            "No suspicious keywords were detected."
+            t("No suspicious keywords were detected.")
         );
 
-        const checkLabels = Array.isArray(result.supplementary_checks)
-            ? result.supplementary_checks.map((check) =>
-                String(check).replace(/_/g, " ")
-            )
-            : [];
+        const checkLabels = localized.keyword_descriptions || [];
         fillList(
             getElement("supplementary-checks-list"),
             checkLabels,
-            "No supplementary rule checks were triggered."
+            t("No supplementary rule checks were triggered.")
         );
         getElement("recommended-action").textContent =
-            result.recommended_action || "";
+            localized.recommended_action || "";
         getElement("message-action-feedback").textContent = "";
+        delete getElement("message-action-feedback").dataset.i18nLive;
         messageResultCard.hidden = false;
     }
 
@@ -363,6 +814,7 @@ if (messageForm) {
                 body: JSON.stringify({
                     message: message,
                     source: messageSource.value,
+                    lang: getCurrentLanguage(),
                 }),
             });
             const result = await response.json();
@@ -376,6 +828,7 @@ if (messageForm) {
 
             latestMessageResult = result;
             renderMessageResult(result);
+            notifyDashboardDataChanged();
         } catch (error) {
             showFriendlyError(
                 messageError,
@@ -399,9 +852,9 @@ if (messageForm) {
                 await navigator.clipboard.writeText(
                     makeMessageReportText(latestMessageResult)
                 );
-                feedback.textContent = "Result copied.";
+                setRuntimeText(feedback, "Result copied.");
             } catch (error) {
-                feedback.textContent = "Copy is unavailable in this browser.";
+                setRuntimeText(feedback, "Copy is unavailable in this browser.");
             }
         });
     }
@@ -422,7 +875,7 @@ if (messageForm) {
                 );
                 const reportData = await response.json();
                 if (!response.ok || !reportData.report) {
-                    throw new Error("Report is unavailable.");
+                    throw new Error(t("Report is unavailable."));
                 }
 
                 downloadTextFile(
@@ -430,9 +883,9 @@ if (messageForm) {
                     JSON.stringify(reportData.report, null, 2),
                     "application/json"
                 );
-                feedback.textContent = "Report downloaded.";
+                setRuntimeText(feedback, "Report downloaded.");
             } catch (error) {
-                feedback.textContent = "Report could not be downloaded. Please try again.";
+                setRuntimeText(feedback, "Report could not be downloaded. Please try again.");
             } finally {
                 downloadButton.disabled = false;
             }
@@ -440,6 +893,11 @@ if (messageForm) {
     }
 
     updateMessageCounter();
+    window.addEventListener("spamshield:languagechange", () => {
+        if (latestMessageResult) {
+            renderMessageResult(latestMessageResult);
+        }
+    });
 }
 
 // URL scanner: send URL text only; this code never navigates to the submitted URL.
@@ -450,6 +908,33 @@ if (urlForm) {
     const urlResultCard = getElement("url-result");
     const urlSpinner = getElement("url-spinner");
     const checkUrlButton = getElement("check-url-button");
+    let latestUrlResult = null;
+
+    function renderUrlResult(result) {
+        const localized = result.localizations
+            ? result.localizations[getCurrentLanguage()]
+            : result;
+        setBadge(getElement("url-classification"), result.classification);
+        const riskScore = Math.max(
+            0,
+            Math.min(100, Number(result.risk_score) || 0)
+        );
+        getElement("url-risk-score").textContent = riskScore + " / 100";
+        const riskBar = getElement("url-risk-bar");
+        riskBar.style.width = riskScore + "%";
+        riskBar.parentElement.setAttribute("aria-valuenow", riskScore);
+        fillList(
+            getElement("url-reasons"),
+            localized.reasons,
+            t("No suspicious URL patterns were detected.")
+        );
+        getElement("url-recommendation").textContent =
+            localized.recommendation || "";
+        getElement("url-note").textContent =
+            (localized.note || t("This is a pattern-based check, not a threat-database lookup.")) +
+            " " + t("The URL is not opened or visited.");
+        urlResultCard.hidden = false;
+    }
 
     urlInput.addEventListener("input", () => {
         getElement("url-char-count").textContent =
@@ -477,7 +962,7 @@ if (urlForm) {
             const response = await fetch("/api/analyze-url", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ url: urlText }),
+                body: JSON.stringify({ url: urlText, lang: getCurrentLanguage() }),
             });
             const result = await response.json();
             if (!response.ok) {
@@ -488,26 +973,9 @@ if (urlForm) {
                 return;
             }
 
-            setBadge(getElement("url-classification"), result.classification);
-            const riskScore = Math.max(
-                0,
-                Math.min(100, Number(result.risk_score) || 0)
-            );
-            getElement("url-risk-score").textContent = riskScore + " / 100";
-            const riskBar = getElement("url-risk-bar");
-            riskBar.style.width = riskScore + "%";
-            riskBar.parentElement.setAttribute("aria-valuenow", riskScore);
-            fillList(
-                getElement("url-reasons"),
-                result.reasons,
-                "No suspicious URL patterns were detected."
-            );
-            getElement("url-recommendation").textContent =
-                result.recommendation || "";
-            getElement("url-note").textContent =
-                (result.note || "This is a pattern-based check, not a threat-database lookup.") +
-                " The URL is not opened or visited.";
-            urlResultCard.hidden = false;
+            latestUrlResult = result;
+            renderUrlResult(result);
+            notifyDashboardDataChanged();
         } catch (error) {
             showFriendlyError(
                 urlError,
@@ -516,6 +984,11 @@ if (urlForm) {
         } finally {
             checkUrlButton.disabled = false;
             urlSpinner.hidden = true;
+        }
+    });
+    window.addEventListener("spamshield:languagechange", () => {
+        if (latestUrlResult) {
+            renderUrlResult(latestUrlResult);
         }
     });
 }
@@ -531,6 +1004,8 @@ if (historyPage) {
     const historyError = getElement("history-error");
     const detailsDialog = getElement("history-details-modal");
     let searchTimer = null;
+    let latestHistory = [];
+    let latestHistoryDetails = null;
 
     async function loadHistory() {
         historyError.hidden = true;
@@ -553,9 +1028,10 @@ if (historyPage) {
             const response = await fetch(endpoint);
             const data = await response.json();
             if (!response.ok) {
-                throw new Error("History could not be loaded.");
+                throw new Error(t("History could not be loaded."));
             }
-            renderHistoryRows(data.history || []);
+            latestHistory = data.history || [];
+            renderHistoryRows(latestHistory);
         } catch (error) {
             tableBody.replaceChildren();
             emptyMessage.hidden = true;
@@ -581,7 +1057,7 @@ if (historyPage) {
             row.appendChild(contentCell);
 
             const typeCell = document.createElement("td");
-            typeCell.textContent = scan.scan_type || "";
+            typeCell.textContent = t(scan.scan_type || "");
             row.appendChild(typeCell);
 
             const classificationCell = document.createElement("td");
@@ -595,7 +1071,9 @@ if (historyPage) {
             row.appendChild(scoreCell);
 
             const dateCell = document.createElement("td");
-            dateCell.textContent = scan.created_at || "";
+            dateCell.textContent = scan.created_at
+                ? formatHistoryTimestamp(scan.created_at)
+                : "";
             row.appendChild(dateCell);
 
             const actionsCell = document.createElement("td");
@@ -604,13 +1082,13 @@ if (historyPage) {
             const viewButton = document.createElement("button");
             viewButton.className = "small-action-button";
             viewButton.type = "button";
-            viewButton.textContent = "View";
+            viewButton.textContent = t("View");
             viewButton.addEventListener("click", () => showScanDetails(scanId));
 
             const deleteButton = document.createElement("button");
             deleteButton.className = "small-action-button delete-scan";
             deleteButton.type = "button";
-            deleteButton.textContent = "Delete";
+            deleteButton.textContent = t("Delete");
             deleteButton.addEventListener("click", () => deleteOneScan(scanId));
 
             actions.append(viewButton, deleteButton);
@@ -633,6 +1111,16 @@ if (historyPage) {
         detailsElement.appendChild(row);
     }
 
+    function formatHistoryTimestamp(value) {
+        const date = new Date(String(value).replace(" ", "T") + "Z");
+        return Number.isNaN(date.getTime())
+            ? String(value)
+            : new Intl.DateTimeFormat(
+                getCurrentLanguage() === "hi" ? "hi-IN" : "en-IN",
+                { dateStyle: "medium", timeStyle: "short" }
+            ).format(date);
+    }
+
     async function showScanDetails(scanId) {
         historyError.hidden = true;
         try {
@@ -641,19 +1129,11 @@ if (historyPage) {
             );
             const scan = await response.json();
             if (!response.ok) {
-                throw new Error("Scan details could not be loaded.");
+                throw new Error(t("Scan details could not be loaded."));
             }
 
-            const detailsElement = getElement("history-details-content");
-            detailsElement.replaceChildren();
-            appendDetail(detailsElement, "Type", scan.scan_type);
-            appendDetail(detailsElement, "Source", scan.source);
-            appendDetail(detailsElement, "Classification", scan.prediction);
-            appendDetail(detailsElement, "Score", String(scan.score) + "%");
-            appendDetail(detailsElement, "Date and time", scan.created_at);
-            appendDetail(detailsElement, "Content", scan.content);
-            appendDetail(detailsElement, "Explanation", scan.explanation);
-            appendDetail(detailsElement, "Flags", scan.flags);
+            latestHistoryDetails = scan;
+            renderHistoryDetails(scan);
             detailsDialog.showModal();
         } catch (error) {
             showFriendlyError(
@@ -663,8 +1143,25 @@ if (historyPage) {
         }
     }
 
+    function renderHistoryDetails(scan) {
+            const detailsElement = getElement("history-details-content");
+            detailsElement.replaceChildren();
+            appendDetail(detailsElement, t("Type"), t(scan.scan_type || ""));
+            appendDetail(detailsElement, t("Source"), t(scan.source || ""));
+            appendDetail(detailsElement, t("Classification"), t(scan.prediction || ""));
+            appendDetail(detailsElement, t("Score"), String(scan.score) + "%");
+            appendDetail(
+                detailsElement,
+                t("Date and time"),
+                formatHistoryTimestamp(scan.created_at)
+            );
+            appendDetail(detailsElement, t("Content"), scan.content);
+            appendDetail(detailsElement, t("Explanation"), scan.explanation);
+            appendDetail(detailsElement, t("Flags"), scan.flags);
+    }
+
     async function deleteOneScan(scanId) {
-        if (!window.confirm("Delete this scan from history?")) {
+        if (!window.confirm(t("Delete this scan from history?"))) {
             return;
         }
 
@@ -674,9 +1171,10 @@ if (historyPage) {
                 { method: "DELETE" }
             );
             if (!response.ok) {
-                throw new Error("Scan could not be deleted.");
+                throw new Error(t("Scan could not be deleted."));
             }
             await loadHistory();
+            notifyDashboardDataChanged();
         } catch (error) {
             showFriendlyError(
                 historyError,
@@ -693,7 +1191,7 @@ if (historyPage) {
     classificationFilter.addEventListener("change", loadHistory);
 
     getElement("clear-history-button").addEventListener("click", async () => {
-        if (!window.confirm("Clear all scan history? This cannot be undone.")) {
+        if (!window.confirm(t("Clear all scan history? This cannot be undone."))) {
             return;
         }
 
@@ -701,9 +1199,10 @@ if (historyPage) {
         try {
             const response = await fetch("/api/history", { method: "DELETE" });
             if (!response.ok) {
-                throw new Error("History could not be cleared.");
+                throw new Error(t("History could not be cleared."));
             }
             await loadHistory();
+            notifyDashboardDataChanged();
         } catch (error) {
             showFriendlyError(
                 historyError,
@@ -722,4 +1221,273 @@ if (historyPage) {
     });
 
     loadHistory();
+    window.addEventListener("spamshield:languagechange", () => {
+        renderHistoryRows(latestHistory);
+        if (latestHistoryDetails) {
+            renderHistoryDetails(latestHistoryDetails);
+        }
+    });
+}
+
+function initializePasswordToggles(form) {
+    form.querySelectorAll("[data-password-toggle]").forEach((button) => {
+        const input = getElement(button.getAttribute("data-password-toggle"));
+        function updateToggleLabel() {
+            const isVisible = input.type === "text";
+            button.textContent = t(isVisible ? "Hide" : "Show");
+            button.setAttribute(
+                "aria-label",
+                t(isVisible ? "Hide password" : "Show password")
+            );
+        }
+        button.addEventListener("click", () => {
+            const showPassword = input.type === "password";
+            input.type = showPassword ? "text" : "password";
+            button.setAttribute("aria-pressed", String(showPassword));
+            updateToggleLabel();
+        });
+        window.addEventListener("spamshield:languagechange", updateToggleLabel);
+    });
+}
+
+const registerForm = getElement("register-form");
+if (registerForm) {
+    const nameInput = getElement("register-name");
+    const emailInput = getElement("register-email");
+    const passwordInput = getElement("register-password");
+    const confirmInput = getElement("register-confirm-password");
+    const strengthLabel = getElement("password-strength");
+    const strengthMeter = getElement("password-strength-meter");
+    const submitButton = getElement("register-submit");
+    const spinner = getElement("register-spinner");
+    const formError = getElement("auth-error");
+    const rules = {
+        length: (password) => password.length >= 8,
+        uppercase: (password) => Array.from(password).some(
+            (character) => character.toUpperCase() === character
+                && character.toLowerCase() !== character
+        ),
+        lowercase: (password) => Array.from(password).some(
+            (character) => character.toLowerCase() === character
+                && character.toUpperCase() !== character
+        ),
+        number: (password) => /[0-9]/.test(password),
+        special: (password) => Array.from(password).some(
+            (character) => !/[\p{L}\p{N}\s]/u.test(character)
+        ),
+    };
+
+    initializePasswordToggles(registerForm);
+
+    function updatePasswordStrength() {
+        const password = passwordInput.value;
+        const emailName = emailInput.value.split("@", 1)[0].toLowerCase();
+        const requirementsMet = Object.values(rules).every((rule) => rule(password));
+        const isCommon = ["password", "12345678", "qwerty123"]
+            .includes(password.toLowerCase());
+        const containsEmailName = emailName && password.toLowerCase()
+            .includes(emailName);
+
+        // Password strength is rule-based and follows the server's validation.
+        let strength = "Weak";
+        if (requirementsMet && !isCommon && !containsEmailName) {
+            if (password.length >= 16) {
+                strength = "Strong";
+            } else if (password.length >= 12) {
+                strength = "Good";
+            } else {
+                strength = "Fair";
+            }
+        }
+
+        Object.entries(rules).forEach(([ruleName, rule]) => {
+            const item = registerForm.querySelector(
+                '[data-password-rule="' + ruleName + '"]'
+            );
+            const met = rule(password);
+            item.classList.toggle("is-met", met);
+            item.querySelector("i").className = met
+                ? "fa-solid fa-circle-check"
+                : "fa-regular fa-circle";
+        });
+
+        strengthLabel.textContent = t(strength);
+        strengthMeter.dataset.strength = strength;
+        strengthMeter.setAttribute(
+            "aria-valuenow",
+            String({ Weak: 1, Fair: 2, Good: 3, Strong: 4 }[strength])
+        );
+        submitButton.disabled =
+            strength === "Weak"
+            || !confirmInput.value
+            || password !== confirmInput.value;
+
+        const confirmError = getElement("confirm-password-error");
+        if (confirmInput.value && password !== confirmInput.value) {
+            setRuntimeText(confirmError, "Passwords do not match.");
+            confirmError.hidden = false;
+        } else {
+            confirmError.hidden = true;
+        }
+        return strength;
+    }
+
+    passwordInput.addEventListener("input", updatePasswordStrength);
+    emailInput.addEventListener("input", updatePasswordStrength);
+    confirmInput.addEventListener("input", updatePasswordStrength);
+    updatePasswordStrength();
+    window.addEventListener("spamshield:languagechange", updatePasswordStrength);
+
+    registerForm.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        formError.hidden = true;
+        const nameError = getElement("register-name-error");
+        const emailError = getElement("register-email-error");
+        const passwordError = getElement("register-password-error");
+        [nameError, emailError, passwordError].forEach((error) => {
+            error.textContent = "";
+            delete error.dataset.i18nLive;
+            error.hidden = true;
+        });
+
+        if (nameInput.value.trim().length < 2 || nameInput.value.trim().length > 50) {
+            setRuntimeText(nameError, "Enter a name between 2 and 50 characters.");
+            nameError.hidden = false;
+            nameInput.focus();
+            return;
+        }
+        const emailPattern = /^[A-Za-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[A-Za-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?\.)+[A-Za-z]{2,63}$/;
+        if (emailInput.value.length > 254 || !emailPattern.test(emailInput.value)) {
+            setRuntimeText(emailError, "Enter a valid email address.");
+            emailError.hidden = false;
+            emailInput.focus();
+            return;
+        }
+        if (!passwordInput.value) {
+            setRuntimeText(passwordError, "Enter a password.");
+            passwordError.hidden = false;
+            passwordInput.focus();
+            return;
+        }
+        if (!confirmInput.value) {
+            const confirmError = getElement("confirm-password-error");
+            setRuntimeText(confirmError, "Confirm your password.");
+            confirmError.hidden = false;
+            confirmInput.focus();
+            return;
+        }
+        if (!registerForm.reportValidity()) {
+            return;
+        }
+        if (updatePasswordStrength() === "Weak") {
+            setRuntimeText(passwordError, "Choose a password that meets all the listed rules.");
+            passwordError.hidden = false;
+            passwordInput.focus();
+            return;
+        }
+        if (passwordInput.value !== confirmInput.value) {
+            const confirmError = getElement("confirm-password-error");
+            setRuntimeText(confirmError, "Passwords do not match.");
+            confirmError.hidden = false;
+            confirmInput.focus();
+            return;
+        }
+
+        submitButton.disabled = true;
+        spinner.hidden = false;
+        submitButton.querySelector(".button-label").hidden = true;
+        try {
+            const response = await fetch(registerForm.action, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(Object.fromEntries(new FormData(registerForm))),
+            });
+            const result = await response.json();
+            if (result.password_strength) {
+                strengthLabel.textContent = t(result.password_strength);
+                strengthMeter.dataset.strength = result.password_strength;
+            }
+            if (!response.ok) {
+                const message = result.error || "We could not create your account.";
+                if (message.includes("Name must")) {
+                    setRuntimeText(nameError, message);
+                    nameError.hidden = false;
+                } else if (message.includes("valid email") || message.includes("already exists")) {
+                    setRuntimeText(emailError, message);
+                    emailError.hidden = false;
+                } else if (message.includes("Password must")) {
+                    setRuntimeText(passwordError, message);
+                    passwordError.hidden = false;
+                } else if (message.includes("Passwords do not match")) {
+                    const confirmError = getElement("confirm-password-error");
+                    setRuntimeText(confirmError, message);
+                    confirmError.hidden = false;
+                } else {
+                    showFriendlyError(formError, message);
+                }
+                return;
+            }
+            window.location.assign("/login");
+        } catch (error) {
+            showFriendlyError(formError, "We could not create your account. Please try again.");
+        } finally {
+            spinner.hidden = true;
+            submitButton.querySelector(".button-label").hidden = false;
+            updatePasswordStrength();
+        }
+    });
+}
+
+const loginForm = getElement("login-form");
+if (loginForm) {
+    const emailInput = getElement("login-email");
+    const passwordInput = getElement("login-password");
+    const submitButton = getElement("login-submit");
+    const spinner = getElement("login-spinner");
+    const errorElement = getElement("auth-error");
+    const lockMessage = getElement("login-lock-message");
+
+    initializePasswordToggles(loginForm);
+    loginForm.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        errorElement.hidden = true;
+        lockMessage.hidden = true;
+        if (!loginForm.reportValidity()) {
+            return;
+        }
+
+        submitButton.disabled = true;
+        spinner.hidden = false;
+        submitButton.querySelector(".button-label").hidden = true;
+        try {
+            const response = await fetch(loginForm.action, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(Object.fromEntries(new FormData(loginForm))),
+            });
+            const result = await response.json();
+            if (!response.ok) {
+                showFriendlyError(
+                    errorElement,
+                    result.error || "Incorrect email or password"
+                );
+                if (result.account_locked) {
+                    setRuntimeText(
+                        lockMessage,
+                        result.lock_message
+                            || "Too many failed attempts. Try again in five minutes."
+                    );
+                    lockMessage.hidden = false;
+                }
+                return;
+            }
+            window.location.assign("/dashboard");
+        } catch (error) {
+            showFriendlyError(errorElement, "Unable to log in right now. Please try again.");
+        } finally {
+            submitButton.disabled = false;
+            spinner.hidden = true;
+            submitButton.querySelector(".button-label").hidden = false;
+        }
+    });
 }

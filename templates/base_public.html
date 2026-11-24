@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="light">
+    <meta name="description" content="SpamShield helps you review suspicious messages and links before you act." data-i18n-content="SpamShield helps you review suspicious messages and links before you act.">
+    <title data-i18n>{% block title %}SpamShield{% endblock %}</title>
+    <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='images/favicon.svg') }}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600;700;800&family=Noto+Sans+Devanagari:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://cdnjs.cloudflare.com">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    {% block head_scripts %}{% endblock %}
+</head>
+<body>
+    <div class="tricolour-strip" aria-hidden="true">
+        <span></span><span></span><span></span>
+    </div>
+    <a class="skip-link" href="#main-content" data-i18n="Skip to main content">Skip to main content</a>
+    <div class="utility-bar">
+        <div class="section-shell utility-inner">
+            <div class="language-switch" role="group" aria-label="Language" data-i18n-aria="Language">
+                <i class="fa-solid fa-globe" aria-hidden="true"></i>
+                <button type="button" data-language-choice="en">English</button>
+                <span aria-hidden="true">|</span>
+                <button type="button" data-language-choice="hi">हिन्दी</button>
+            </div>
+            <div class="accessibility-tools" aria-label="Text size" data-i18n-aria="Text size">
+                <span data-i18n="Text size">Text size</span>
+                <button type="button" data-font-size="15" aria-label="Decrease text size" data-i18n-aria="Decrease text size">A-</button>
+                <button type="button" data-font-size="16" aria-label="Default text size" data-i18n-aria="Default text size">A</button>
+                <button type="button" data-font-size="18" aria-label="Increase text size" data-i18n-aria="Increase text size">A+</button>
+            </div>
+        </div>
+    </div>
+
+    <header class="public-header" id="site-header">
+        <div class="section-shell public-header-inner">
+            <a class="brand" href="{{ url_for('home') }}" aria-label="SpamShield home" data-i18n-aria="SpamShield home">
+                <span class="brand-mark" aria-hidden="true"><i class="fa-solid fa-shield-halved"></i></span>
+                <span class="brand-copy">
+                    <strong>SpamShield</strong>
+                    <span data-i18n="AI-powered spam and phishing checker">AI-powered spam and phishing checker</span>
+                </span>
+            </a>
+            <button class="menu-toggle" id="menu-toggle" type="button" aria-label="Open navigation menu" data-i18n-aria="Open navigation menu" aria-controls="site-nav" aria-expanded="false">
+                <i class="fa-solid fa-bars" aria-hidden="true"></i>
+            </button>
+            <nav class="site-nav" id="site-nav" aria-label="Main navigation" data-i18n-aria="Main navigation">
+                <a class="{% if request.endpoint == 'home' %}is-active{% endif %}" href="{{ url_for('home') }}" data-i18n="Home">Home</a>
+                <a class="{% if request.endpoint == 'about' %}is-active{% endif %}" href="{{ url_for('about') }}" data-i18n="About">About</a>
+                <a class="{% if request.endpoint == 'scam_awareness' %}is-active{% endif %}" href="{{ url_for('scam_awareness') }}" data-i18n="Scam Awareness">Scam Awareness</a>
+                {% if session.get('user_id') %}
+                    <a class="button button-outline nav-account-link" href="{{ url_for('dashboard') }}" data-i18n="Open my dashboard">Open my dashboard</a>
+                {% else %}
+                    <a href="{{ url_for('login') }}" data-i18n="Log in">Log in</a>
+                    <a class="button button-primary nav-account-link" href="{{ url_for('register') }}" data-i18n="Register">Register</a>
+                {% endif %}
+            </nav>
+        </div>
+    </header>
+
+    {% if request.endpoint != 'home' %}
+        <div class="section-shell public-page-shell">{% block breadcrumbs %}{% endblock %}</div>
+    {% endif %}
+    <div id="main-content">
+        {% block content %}{% endblock %}
+    </div>
+
+    <footer class="public-footer" id="site-footer">
+        <div class="section-shell footer-grid">
+            <div class="footer-brand">
+                <a class="brand brand-footer" href="{{ url_for('home') }}">
+                    <span class="brand-mark" aria-hidden="true"><i class="fa-solid fa-shield-halved"></i></span>
+                    <span class="brand-copy"><strong>SpamShield</strong><span data-i18n="Pause. Check. Verify.">Pause. Check. Verify.</span></span>
+                </a>
+                <p data-i18n="Tools and guidance to help you make a more informed decision.">Tools and guidance to help you make a more informed decision.</p>
+            </div>
+            <div class="footer-group">
+                <h2 data-i18n="Explore">Explore</h2>
+                <a href="{{ url_for('about') }}" data-i18n="About SpamShield">About SpamShield</a>
+                <a href="{{ url_for('scam_awareness') }}" data-i18n="Scam awareness">Scam awareness</a>
+            </div>
+            <div class="footer-group">
+                <h2 data-i18n="Your account">Your account</h2>
+                <a href="{{ url_for('login') }}" data-i18n="Log in">Log in</a>
+                <a href="{{ url_for('register') }}" data-i18n="Register">Register</a>
+            </div>
+            <div class="footer-help">
+                <h2 data-i18n="Need to report cyber fraud?">Need to report cyber fraud?</h2>
+                <p><span data-i18n="Call">Call</span> <a href="tel:1930">1930</a> <span data-i18n="or visit">or visit</span> <a href="https://cybercrime.gov.in" rel="noopener noreferrer" target="_blank">cybercrime.gov.in</a>.</p>
+            </div>
+            <div class="footer-note">
+                <p data-i18n="SpamShield is a student project and is not an official government service.">SpamShield is a student project and is not an official government service.</p>
+                <p data-i18n="Results are estimates and are not a substitute for independent verification.">Results are estimates and are not a substitute for independent verification.</p>
+            </div>
+        </div>
+    </footer>
+    <script src="{{ url_for('static', filename='js/i18n.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
