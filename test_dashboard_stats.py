@@ -1,14 +1,21 @@
 import os
 import unittest
 from datetime import datetime, timedelta, timezone
+from unittest.mock import patch
 
 if not os.getenv("MONGODB_URI"):
     os.environ["MONGODB_URI"] = "mongodb://localhost:27017/spamshield-test"
 
+from utils import database
 from utils.database import _assemble_dashboard_stats
 
 
 class DashboardStatsTests(unittest.TestCase):
+    def test_database_initialization_requires_mongodb(self):
+        with patch.object(database, "mongo_database", None):
+            with self.assertRaises(database.DatabaseError):
+                database.init_db()
+
     def test_dashboard_aggregates_are_range_and_user_scoped(self):
         today = datetime.now(timezone.utc).date()
         current_start = today - timedelta(days=6)

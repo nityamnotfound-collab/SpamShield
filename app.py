@@ -493,5 +493,8 @@ def dashboard_stats():
 
 
 if __name__ == "__main__":
-    init_db()
+    try:
+        init_db()
+    except DatabaseError:
+        app.logger.exception("Database initialization failed")
     app.run(debug=False)

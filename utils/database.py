@@ -7,7 +7,7 @@ from bson.errors import InvalidId
 from bson.objectid import ObjectId
 from dotenv import load_dotenv
 from pymongo import MongoClient
-from pymongo.errors import DuplicateKeyError
+from pymongo.errors import ConfigurationError, DuplicateKeyError
 
 from utils.scam_categories import SCAM_CATEGORIES
 
@@ -28,15 +28,25 @@ class UserAlreadyExistsError(Exception):
     """Raised when an account email is already registered."""
 
 
-if not MONGODB_URI:
-    raise RuntimeError("MONGODB_URI is required to run SpamShield.")
+mongo_configuration_error = None
+mongo_client = None
+mongo_database = None
+scans_collection = None
+users_collection = None
 
-# MongoDB performs connection checks on use, keeping imports fast for tests.
-mongo_client = MongoClient(MONGODB_URI, serverSelectionTimeoutMS=5000)
-mongo_database = mongo_client[MONGODB_DB_NAME]
-scans_collection = mongo_database["scans"]
-users_collection = mongo_database["users"]
-print("Using MongoDB database:", MONGODB_DB_NAME)
+if MONGODB_URI:
+    try:
+        # MongoDB performs connection checks on use, keeping imports fast for tests.
+        mongo_client = MongoClient(MONGODB_URI, serverSelectionTimeoutMS=5000)
+        mongo_database = mongo_client[MONGODB_DB_NAME]
+        scans_collection = mongo_database["scans"]
+        users_collection = mongo_database["users"]
+        logger.info("Using MongoDB database: %s", MONGODB_DB_NAME)
+    except ConfigurationError as error:
+        mongo_configuration_error = error
+        logger.error("MONGODB_URI is invalid; database operations are disabled.")
+else:
+    logger.error("MONGODB_URI is not configured; database operations are disabled.")
 
 
 def _dashboard_period(range_name):
@@ -229,12 +239,20 @@ def _normalize_prediction(prediction):
 def _run_database_operation(operation_name, operation):
     """Log the internal database error and expose only a generic custom error."""
     try:
+        _require_mongodb()
         return operation()
     except DatabaseError:
         raise
     except Exception as error:
         logger.exception("Database operation failed: %s", operation_name)
         raise DatabaseError("Database operation failed.") from error
+
+
+def _require_mongodb():
+    if mongo_configuration_error is not None:
+        raise DatabaseError("MONGODB_URI is invalid.") from mongo_configuration_error
+    if mongo_database is None:
+        raise DatabaseError("MONGODB_URI is required for database operations.")
 
 
 def _mongo_init_db():
@@ -609,6 +627,7 @@ def create_user(name, email, password_hash):
     """Create an account and return its database ID."""
     email = email.strip().lower()
     try:
+        _require_mongodb()
         return _mongo_create_user(name, email, password_hash)
     except DuplicateKeyError as error:
         raise UserAlreadyExistsError("An account with that email already exists.") from error

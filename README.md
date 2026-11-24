@@ -103,9 +103,9 @@ pip install -r requirements.txt
 ## Configure environment variables
 
 Copy `.env.example` to `.env` and set `SECRET_KEY`, `MONGODB_URI`, and
-`MONGODB_DB_NAME`. MongoDB is required; the app will not start without
-`MONGODB_URI`. Replace all sample values; never commit `.env` or paste real
-credentials into source files.
+`MONGODB_DB_NAME`. MongoDB is required for account and scan operations.
+Replace all sample values; never commit `.env` or paste real credentials into
+source files.
 
 Generate a random key with:
 
@@ -163,8 +163,8 @@ MongoDB Atlas is required for local and deployed runs.
    database and creates the account email and scan indexes.
 
 Atlas creates the database and collections as accounts and scans are saved.
-The app stops at startup if `MONGODB_URI` is missing or MongoDB cannot be
-reached; it never falls back to local storage.
+If MongoDB is missing or cannot be reached, database operations fail and the
+startup error is logged; the app never falls back to local storage.
 
 ## Deploy with Render and Vercel
 
@@ -204,12 +204,13 @@ Render requires the configured MongoDB Atlas connection for accounts and scans.
 4. Deploy the project and open the deployment URL shown by Vercel.
 
 Vercel's function filesystem is not persistent, so MongoDB Atlas is required.
-If `MONGODB_URI` is missing or MongoDB cannot be reached, the function fails
-at startup instead of silently using temporary storage. `load_dotenv()` is
-harmless on Vercel, but `.env` is not deployed; set the variables in Project
-Settings instead. Configure Atlas Network Access for the outbound connections
-used by your Render and Vercel deployments. Use the platforms' current
-networking options and avoid opening database access broadly.
+If `MONGODB_URI` is missing or MongoDB cannot be reached, database operations
+fail instead of silently using temporary storage; public pages can still load.
+`load_dotenv()` is harmless on Vercel, but `.env` is not deployed; set the
+variables in Project Settings instead. Configure Atlas Network Access for the
+outbound connections used by your Render and Vercel deployments. Use the
+platforms' current networking options and avoid opening database access
+broadly.
 
 If both deployments use the same Atlas database URI and database name, they
 share scan history. Separate database names or clusters keep their histories
